@@ -9,7 +9,23 @@ module.exports.gen_id = (pre) => {
 }
 
 // a function for parsing mol2 files into JSON
+module.exports.mol2ToJson = (mol2Text) => {
+	let lines = ["{"];
+	let mol = ["molecule: {"];
+	let atom = ["atom: {"];
+	let bond = ["bond: {"];
+}
 
+
+module.exports.mol2Read = (event) => {
+	const reader = new FileReader();
+	reader.readAsText(event.files[0]);
+	reader.onload = () => {
+		const text = reader.result;
+		const output = this.mol2ToJson(text);
+		console.log(output)
+	};
+}
 
 
 // a function for parsing Dragon cheminformatics output CSV into JSON
@@ -46,7 +62,7 @@ module.exports.DragonCsvRead = (event) => {
 	reader.readAsText(event.files[0]);
 	reader.onload = () => {
 		const text = reader.result;
-		const dragonToJson = this.dragonToJson(text);
-		console.log(dragonToJson);
+		const output = this.dragonToJson(text);
+		console.log(output);
 	};
 }
