@@ -1,0 +1,37 @@
+{
+  "name": "materialsbase",
+  "version": "0.0.1",
+  "description": "A materials database for properties predictions",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "postgresql",
+    "rdkit",
+    "cheminformatics"
+  ],
+  "author": "Stephen Szwiec",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "argon2-ffi": "^2.0.0",
+    "body-parser": "^1.19.1",
+    "cookieparser": "^0.1.0",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dont-sniff-mimetype": "^1.1.0",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "helmet": "^5.0.1",
+    "method-override": "^3.0.0",
+    "nocache": "^3.0.1",
+    "node-esapi": "^0.0.1",
+    "path": "^0.12.7",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.12.5",
+    "serve-favicon": "^2.5.0"
+  }
+}
