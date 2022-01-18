@@ -10,16 +10,16 @@ module.exports = app => {
 	router.get("/", compounds.findAll);
 
 	// get one compound by id
-	router.get("/compoundid/:comp_id", compounds.findOne);
+	router.get("/:comp_id", compounds.findOne);
 
 	// put updated compound info
-	router.put("/update/:comp_id", compounds.update);
+	router.put("/:comp_id", compounds.update);
 
 	// delete one compound by id
 	router.delete("/:comp_id", compounds.delete);
 
 	// delete all compounds
-	router.delete("/destroy", compounds.deleteAll);
+	router.delete("/", compounds.deleteAll);
 
 	// finally, use the router for the app
 	app.use("api/compounds", router);

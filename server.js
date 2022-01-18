@@ -121,7 +121,7 @@ require("./app/routes/compound_routes.js")(app);
 
 // set port, listen for requests
 const httpsServer = https.createServer(credentials, app);
-const PORT = 443;
+const PORT = 8080;
 httpsServer.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}.`);
 });

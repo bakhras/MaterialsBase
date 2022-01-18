@@ -19,13 +19,13 @@ module.exports = app => {
 	router.get("/active", users.findAllByActive);
 
 	// get one user by id
-	router.get("/userid/:user_id", users.findByPk);
+	router.get("/:user_id", users.findByPk);
 
 	// get one user by name
-	router.get("/username/:user_name", users.findOne);
+	router.get("/:user_name", users.findOne);
 
 	// put updated user info
-	router.put("/update/:user_id", users.update);
+	router.put("/:user_id", users.update);
 
 	// put change to user password
 	router.put("/newpass/:user_id", users.newPass);
@@ -34,7 +34,7 @@ module.exports = app => {
 	router.delete("/:user_id", users.delete);
 
 	// delete all users
-	router.delete("/destroy", users.deleteAll);
+	router.delete("/", users.deleteAll);
 
 	// finally, use the router for the app
 	app.use("/api/users", router);
