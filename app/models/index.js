@@ -1,8 +1,8 @@
 const {Sequelize, DataTypes, Utils} = require("sequelize");
 const process = require("../../process.js");
 //createMolDatatype();
-const sequelize = new Sequelize(process.config.DB_DATABASE, process.config.DB_USER, process.config.DB_PASS, {
-	host: process.config.DB_HOST,
+const sequelize = new Sequelize(process.DB_DATABASE, process.DB_USER, process.DB_PASS, {
+	host: process.DB_HOST,
 	dialect: "postgres",
 	pool: {
 		max: 5,

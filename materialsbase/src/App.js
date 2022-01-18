@@ -1,8 +1,8 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() extends Component {
+class App extends Component {
 	render() {
 		return(
 			<div>
