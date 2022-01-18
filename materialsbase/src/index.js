@@ -7,10 +7,16 @@ import App from './App';
 //import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
+  	// some temporary proof of concept instead of an app
+	<React.StrictMode>
+		<App />
+	</React.StrictMode>,
+	document.getElementById('root')
+
+	//<BrowserRouter>
+		//<App />
+	//</BrowserRouter>,
+	//document.getElementById('root')
 );
 
 //serviceWorker.unregister();
