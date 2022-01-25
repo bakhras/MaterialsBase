@@ -11,19 +11,24 @@ const AddCompound = () => {
 		comp_mol2: null,
 		comp_components: "",
 		comp_properties: "",
-		comp_activities: "",
-		comp_overallProperties: "",
-		comp_overallActivities: ""
   };
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
+	const [uploadFile, setUploadFile] = useState();
+
+
 
 	const dispatch = useDispatch();
 
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCompound({ ...compound, [name]: value });
+	};
+
+	const handleFileUpload = event => {
+		const { name, file } = event.target;
+		set
 	};
 
 	const saveCompound = () => {
@@ -38,9 +43,6 @@ const AddCompound = () => {
 					comp_mol2: data.comp_mol2,
 					comp_components: data.comp_components,
 					comp_properties: data.comp_properties,
-					comp_activities: data.comp_activities,
-					comp_overallProperties: data.comp_overallProperties,
-					comp_overallActivities: data.comp_overallActivities
         			});
         			setSubmitted(true);
 
@@ -108,6 +110,7 @@ const AddCompound = () => {
 				<label htmlFor="comp_mol2">Compound mol2</label>
 		 		<input
 		  			type="file"
+		  			accept=".mol2,.txt"
 		  			className="form-control"
 		  			id="comp_mol2"
 		  			value={compound.comp_index}

@@ -7,7 +7,7 @@ import {
 } from "./types";
 import CompoundDataService from "../services/compound.service"
 
-export const createCompound = (comp_index, comp_material, comp_notation, comp_mol2, comp_components, comp_properties, comp_activities, comp_overallProperties, comp_overallActivities) => async (dispatch) => {
+export const createCompound = (comp_index, comp_material, comp_notation, comp_mol2, comp_components, comp_properties) => async (dispatch) => {
 	try {
 		const res = await CompoundDataService.create({
 			comp_index,
@@ -16,9 +16,6 @@ export const createCompound = (comp_index, comp_material, comp_notation, comp_mo
 			comp_mol2,
 			comp_components,
 			comp_properties,
-			comp_activities,
-			comp_overallProperties,
-			comp_overallActivities
 		});
 
 		dispatch({

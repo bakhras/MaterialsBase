@@ -21,9 +21,6 @@ exports.create = (req, res) => {
 		comp_mol2: (req.body.comp_mol2),
 		comp_components: (req.body.comp_components),
 		comp_properties: (req.body.comp_properties),
-		comp_activities: (req.body.comp_activities),
-		comp_overallProperties: (req.body.comp_overallProperties),
-		comp_overallActivities: (req.body.comp_overallActivities)
 	};
 
 	Compound.create(comp)
@@ -90,9 +87,6 @@ exports.update = (req,res) => {
 		comp_notation: null,
 		comp_mol2: null,
 		comp_properties: null,
-		comp_activities: null,
-		comp_overallProperties: null,
-		comp_overallActivities: null
 	};
 
 	if(!req.body.comp_index || req.body.comp_index == null) {
@@ -119,21 +113,6 @@ exports.update = (req,res) => {
 		new_compound.comp_properties = comp_elements.comp_properties;
 	} else {
 		new_compound.comp_properties = req.body.comp_properties;
-	}
-	if(!req.body.comp_activities || req.body.comp_activities == null) {
-		new_compound.comp_activities = comp_elements.comp_activities;
-	} else {
-		new_compound.comp_activities = req.body.comp_activities;
-	}
-	if(!req.body.comp_overallProperties || req.body.comp_overallProperties == null) {
-		new_compound.comp_overallProperties = comp_elements.comp_overallProperties;
-	} else {
-		new_compound.comp_overallProperties = req.body.comp_overallProperties;
-	}
-	if(!req.body.comp_overallActivities || req.body.comp_overallActivities) {
-		new_compound.comp_overallActivities = comp_elements.comp_overallActivities;
-	} else {
-		new_compound.comp_overallActivities = req.body.comp_overallActivities;
 	}
 
 	Compound.update(new_compound, {

@@ -30,18 +30,6 @@ module.exports = function(sequelize, DataTypes) {
     comp_properties: {
       type: DataTypes.JSONB,
       allowNull: true
-    },
-    comp_activities: {
-      type: DataTypes.JSONB,
-      allowNull: true
-    },
-    comp_overallProperties: {
-      type: DataTypes.JSONB,
-      allowNull: true
-    },
-    comp_overallActivities: {
-      type: DataTypes.JSONB,
-      allowNull: true
     }
   }, {
     sequelize,
