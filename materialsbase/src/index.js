@@ -1,22 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from "react-router-dom";
-import './index.css';
 import App from './App';
 //import * as serviceWorker from "./serviceWorker";
 //import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import store from './store';
 
 ReactDOM.render(
-  	// some temporary proof of concept instead of an app
-	<React.StrictMode>
+	<Provider store={store}>
 		<App />
-	</React.StrictMode>,
+	</Provider>,
 	document.getElementById('root')
-
-	//<BrowserRouter>
-		//<App />
-	//</BrowserRouter>,
-	//document.getElementById('root')
 );
 
 //serviceWorker.unregister();
