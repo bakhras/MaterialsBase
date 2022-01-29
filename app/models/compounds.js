@@ -16,11 +16,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     comp_notation: {
+      // TO-DO: write a datatype to accept SMILES
+      //type: DataTypes.mol,
       type: DataTypes.TEXT,
       allowNull: false
     },
     comp_mol2: {
-      type: DataTypes.JSONB,
+      // TO-DO: write a json parser for mol2 files
+      //type: DataTypes.JSONB,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     comp_components: {

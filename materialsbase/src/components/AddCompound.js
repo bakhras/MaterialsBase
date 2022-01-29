@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCompound } from "../actions/compounds";
+import Papa from "papaparse";
 
 const AddCompound = () => {
 	const initialCompoundState = {
@@ -10,8 +11,8 @@ const AddCompound = () => {
 		comp_notation: "",
 		comp_mol2: null,
 		comp_components: "",
-		comp_properties: "",
-  };
+		comp_properties: null,
+	};
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
@@ -26,9 +27,20 @@ const AddCompound = () => {
 		setCompound({ ...compound, [name]: value });
 	};
 
-	const handleFileUpload = event => {
+	const handleMolUpload = event => {
 		const { name, file } = event.target;
-		set
+		setCompound({...compound, [name] =  })
+	};
+
+	const handleCsvUpload = event => {
+		const { name, file} = event.target;
+		setCompound({...compound, [name]: Papa.parse(file, {
+			header: true,
+			dynamicTyping: true,
+			complete: function(results) {
+				console.log(results);
+			}
+		})})
 	};
 
 	const saveCompound = () => {
@@ -114,12 +126,22 @@ const AddCompound = () => {
 		  			className="form-control"
 		  			id="comp_mol2"
 		  			value={compound.comp_index}
-		  			onChange={handleInputChange}
+		  			onChange={handleMolUpload}
 		  			name="comp_index"
 		  		/>
 		  	</div>
-
-
+			<div className="form-group">
+		  		<label htmlFor="comp_properties">Compound Properties</label>
+		  		<input
+		  			type="file"
+					accept=".csv, .txt"
+		  			className="form-control"
+		  			id="comp_properties"
+		  			value={compound.comp_properties}
+		  			onChange={handleCsvUpload}
+		  			name="comp_properties"
+		  		/>
+		  	</div>
 		  	<button onClick={saveCompound} className="btn btn-success">Submit</button>
 		  </div>
 		)}
