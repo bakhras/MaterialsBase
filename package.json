@@ -1,6 +1,6 @@
 {
   "name": "materialsbase",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A materials database for properties predictions",
   "main": "server.js",
   "scripts": {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCompound } from "../actions/compounds";
-import Papa from "papaparse";
+import Papa from "papaparse"; /* csv extraction */
 
 const AddCompound = () => {
 	const initialCompoundState = {
@@ -16,20 +16,20 @@ const AddCompound = () => {
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
-	const [uploadFile, setUploadFile] = useState();
 
 
 
 	const dispatch = useDispatch();
+	dispatch(createCompound);
 
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCompound({ ...compound, [name]: value });
 	};
 
-	const handleMolUpload = event => {
-		const { name, file } = event.target;
-		setCompound({...compound, [name] =  })
+	const handleFileUpload = event => {
+		const { name, value } = event.target.files[0];
+		setCompound({...compound, [name]: value });
 	};
 
 	const handleCsvUpload = event => {
@@ -44,9 +44,23 @@ const AddCompound = () => {
 	};
 
 	const saveCompound = () => {
-		const { title, description } = compound;
+		const {
+			comp_index,
+			comp_material,
+			comp_notation,
+			comp_mol2,
+			comp_components,
+			comp_properties
+		 } = compound;
 
-		dispatch(createCompound(title, description))
+		dispatch(createCompound(
+			comp_index,
+			comp_material,
+			comp_notation,
+			comp_mol2,
+			comp_components,
+			comp_properties
+		))
 			.then(data => {
 				setCompound({
 					comp_index: data.comp_index,
@@ -126,7 +140,7 @@ const AddCompound = () => {
 		  			className="form-control"
 		  			id="comp_mol2"
 		  			value={compound.comp_index}
-		  			onChange={handleMolUpload}
+		  			onChange={handleFileUpload}
 		  			name="comp_index"
 		  		/>
 		  	</div>

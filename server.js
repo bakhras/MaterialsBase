@@ -1,6 +1,6 @@
 // import the required libraries
 const fs = require('fs');
-//const http = require('http');
+const http = require('http');
 const https = require('https');
 const crypto = require('crypto');
 const express = require('express');
@@ -18,6 +18,7 @@ var methodOverride = require('method-override');
 var session = require('express-session');
 
 // make https work
+/*
 const privkey = fs.readFileSync('/etc/letsencrypt/live/dyn243.research1-99.ndsu.nodak.edu/privkey.pem', 'utf8');
 const cert = fs.readFileSync('/etc/letsencrypt/live/dyn243.research1-99.ndsu.nodak.edu/cert.pem', 'utf8');
 const ca = fs.readFileSync('/etc/letsencrypt/live/dyn243.research1-99.ndsu.nodak.edu/chain.pem', 'utf8');
@@ -26,6 +27,7 @@ const credentials = {
 	cert: cert,
 	ca: ca
 };
+*/
 
 // random id for system
 const secret_id = crypto.randomBytes(16).toString("hex");
@@ -120,8 +122,9 @@ require("./app/routes/compound_routes.js")(app);
 
 
 // set port, listen for requests
-const httpsServer = https.createServer(credentials, app);
+//const httpsServer = https.createServer(credentials, app);
 const PORT = 8080;
-httpsServer.listen(PORT, () => {
+//httpsServer.listen(PORT, () => {
+app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}.`);
 });
