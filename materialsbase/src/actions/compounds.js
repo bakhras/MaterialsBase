@@ -1,6 +1,6 @@
 import {
 	CREATE_COMPOUND,
-	RETRIEVE_COMPOUNDS,
+	RETRIEVE_COMPOUND,
 	UPDATE_COMPOUND,
 	DELETE_COMPOUND,
 	DELETE_ALL_COMPOUNDS
@@ -33,7 +33,7 @@ export const retrieveCompounds = () => async (dispatch) => {
 	try{
 		const res = await CompoundDataService.getAll();
 		dispatch({
-			type: RETRIEVE_COMPOUNDS,
+			type: RETRIEVE_COMPOUND,
 			payload: res.data,
 		});
 	} catch (err) {
@@ -81,5 +81,17 @@ export const deleteAllCompounds = () => async (dispatch) => {
 		return Promise.resolve(res.data);
 	} catch (err) {
 		return Promise.reject(err);
+	}
+};
+
+export const findCompoundByTitle = (title) => async (dispatch) => {
+	try {
+		const res = await CompoundDataService.findCompoundByTitle(title);
+		dispatch({
+			type: RETRIEVE_COMPOUND,
+			payload: res.data,
+		});
+	} catch (err) {
+		console.log(err);
 	}
 };

@@ -1,12 +1,12 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 
-import AddCompound from "./compounds/AddCompound";
-import Compound from "./compounds/Compound";
-import CompoundsList from "./compounds/CompoundsList";
+import AddCompound from "./components/AddCompound";
+//import Compound from "./components/Compound";
+import CompoundsList from "./components/CompoundList";
 
 // proof of concept code
 
@@ -55,11 +55,11 @@ function App() {
           			</div>
         		</nav>
 			<div className="container mt-3">
-				<Switch>
+				<Routes>
 					<Route exact path={["/", "/compounds"]} component={CompoundsList} />
 					<Route exact path="/add" component={AddCompound} />
-					<Route path="/compounds/:id" component={Compound} />
-				</Switch>
+					<Route path="/compounds/:comp_id" component={Compound} />
+				</Routes>
 			</div>
      	 	</Router>
 	);

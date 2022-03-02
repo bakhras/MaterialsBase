@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	retrieveCompounds,
-	findCompoundsByTitle,
+	findCompoundByTitle,
 	deleteAllCompounds,
 } from "../actions/compounds";
 
@@ -35,8 +35,8 @@ const CompoundsList = () => {
 
 	const removeAllCompounds = () => {
 		dispatch(deleteAllCompounds())
-		.then(respnse => {
-			console.log(reponse);
+		.then(response => {
+			console.log(response);
 			refreshData();
 		})
 		.catch(err => {
@@ -46,7 +46,7 @@ const CompoundsList = () => {
 
 	const findByTitle = () => {
 		refreshData();
-		dispatch(findCompoundsByTitle(searchTitle));
+		dispatch(findCompoundByTitle(searchTitle));
 	};
 
 	const downloadMol2 = () => {
