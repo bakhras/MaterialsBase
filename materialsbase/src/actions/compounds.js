@@ -58,7 +58,7 @@ export const updateCompound = (comp_id, data) => async (dispatch) => {
 
 export const deleteCompound = (comp_id) => async (dispatch) => {
 	try {
-		await CompoundDataService.deleteCompound(id);
+		await CompoundDataService.deleteCompound(comp_id);
 
 		dispatch({
 			type: DELETE_COMPOUND,

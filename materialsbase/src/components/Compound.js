@@ -5,12 +5,12 @@ import CompoundDataService from "../services/compound.service";
 
 const Compound = (props) => {
 	const initialCompoundState = {
-		comp_index = "",
-		comp_material = "",
-		comp_notation = "",
-		comp_mol2 = "",
-		comp_components = null,
-		comp_properties = null,
+		comp_index: "",
+		comp_material: "",
+		comp_notation: "",
+		comp_mol2: "",
+		comp_components: null,
+		comp_properties: null,
 	};
 
 	const [currentCompound, setCurrentCompound] = useState(initialCompoundState);
@@ -78,7 +78,7 @@ const Compound = (props) => {
 
 	};
 
-	return {
+	return (
 		<div>
 		{currentCompound ? (
 				<div className="edit-form">
@@ -168,7 +168,7 @@ const Compound = (props) => {
 				</div>
 		)}
 		</div>
-	};
+	);
 };
 
 export default Compound;

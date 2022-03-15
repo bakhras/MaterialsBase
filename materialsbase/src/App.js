@@ -1,11 +1,11 @@
-// import logo from './logo.svg';
-import React from "react";
+//import logo from './logo.svg';
+import { React }  from "react";
+import { BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 
 import AddCompound from "./components/AddCompound";
-//import Compound from "./components/Compound";
+import Compound from "./components/Compound";
 import CompoundsList from "./components/CompoundList";
 
 // proof of concept code
@@ -42,26 +42,28 @@ import CompoundsList from "./components/CompoundList";
 
 function App() {
 	return(
+		<div className="App">
 		<Router>
 			<nav className="navbar navbar-expand navbar-dark bg-dark">
 				<a href="/compounds" className="navbar-brand">MaterialsBase</a>
 				<div className="navbar-nav mr-auto">
 					<li className="nav-item">
-              					<Link to={"/compounds"} className="nav-link">Compounds</Link>
+						<Link to={"/compounds"} className="nav-link">Compounds</Link>
 					</li>
 					<li className="nav-item">
-              					<Link to={"/add"} className="nav-link">Add</Link>
-            				</li>
-          			</div>
-        		</nav>
+						<Link to={"/add"} className="nav-link">Add</Link>
+					</li>
+				</div>
+			</nav>
 			<div className="container mt-3">
 				<Routes>
-					<Route exact path={["/", "/compounds"]} component={CompoundsList} />
-					<Route exact path="/add" component={AddCompound} />
-					<Route path="/compounds/:comp_id" component={Compound} />
+					<Route exact path="/" element={<CompoundsList />} />
+					<Route exact path="/add" element={<AddCompound />} />
+					<Route path="/compounds/:comp_id" element={<Compound />} />
 				</Routes>
 			</div>
-     	 	</Router>
+		</Router>
+		</div>
 	);
 }
 

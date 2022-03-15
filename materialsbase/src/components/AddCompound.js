@@ -5,7 +5,6 @@ import Papa from "papaparse"; /* csv extraction */
 
 const AddCompound = () => {
 	const initialCompoundState = {
-		comp_id: null,
 		comp_index: "",
 		comp_material: "",
 		comp_notation: "",
@@ -28,8 +27,8 @@ const AddCompound = () => {
 	};
 
 	const handleFileUpload = event => {
-		const { name, value } = event.target.files[0];
-		setCompound({...compound, [name]: value });
+		const { name, file } = event.target;
+		setCompound({ ...compound, [name]: file });
 	};
 
 	const handleCsvUpload = event => {
@@ -99,7 +98,7 @@ const AddCompound = () => {
 		  			type="text"
 		  			className="form-control"
 		  			id="comp_index"
-		  			required
+
 		  			value={compound.comp_index}
 		  			onChange={handleInputChange}
 		  			name="comp_index"
@@ -126,6 +125,7 @@ const AddCompound = () => {
 		  			className="form-control"
 		  			id="comp_notation"
 		  			required
+
 		  			value={compound.comp_notation}
 		  			onChange={handleInputChange}
 		  			name="comp_notation"
@@ -136,7 +136,7 @@ const AddCompound = () => {
 				<label htmlFor="comp_mol2">Compound mol2</label>
 		 		<input
 		  			type="file"
-		  			accept=".mol2,.txt"
+		  			accept=".mol2, .txt"
 		  			className="form-control"
 		  			id="comp_mol2"
 		  			value={compound.comp_index}

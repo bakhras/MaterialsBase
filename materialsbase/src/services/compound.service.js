@@ -1,41 +1,31 @@
 import http from "../http-common";
+class CompoundDataService {
+	getAll() {
+		return http.get("/compounds");
+	}
 
-const getAll = () => {
-	return http.get("/compounds");
-};
+	get(id) {
+		return http.get(`/compounds/${id}`);
+	}
 
-const get = id => {
-	return http.get("/compounds/${id}");
-};
+	create(data){
+		return http.post("/compounds/", data);
+	}
 
-const create = data => {
-	return http.post("/compounds/", data);
-};
+	update(id, data){
+		return http.put(`/compounds/${id}`, data);
+	}
 
-const update = (id, data) => {
-	return http.put("/compounds/${id}", data);
-};
+	remove(id){
+		return http.delete(`/compounds/${id}`);
+	}
 
-const remove = id => {
-	return http.delete("/compounds/${id}", data);
-};
+	removeAll() {
+		return http.delete("/compounds");
+	}
 
-const removeAll = () => {
-	return http.delete("/compounds");
-};
-
-const findCompoundsByTitle = title => {
-	return http.get(`/compounds?comp_index=${title}`);
-};
-
-const CompoundDataService = {
-	getAll,
-	get,
-	create,
-	update,
-	remove,
-	removeAll,
-	findCompoundsByTitle,
-};
-
+	findCompoundsByTitle = title => {
+		return http.get(`/compounds?comp_index=${title}`);
+	}
+}
 export default new CompoundDataService();
