@@ -5,8 +5,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AddCompound from "./components/AddCompound";
-import Compound from "./components/Compound";
-import CompoundsList from "./components/CompoundList";
+//import Compound from "./components/Compound";
+//import CompoundsList from "./components/CompoundList";
+
+import ViewDetail from "./longscomponent/ViewDetail/ViewDetail";
+import ViewListContainer from "./longscomponent/ViewList/ViewListContainer";
 
 // proof of concept code
 
@@ -57,9 +60,9 @@ function App() {
 			</nav>
 			<div className="container mt-3">
 				<Routes>
-					<Route exact path="/" element={<CompoundsList />} />
+					<Route exact path="/" element={<ViewListContainer />} />
 					<Route exact path="/add" element={<AddCompound />} />
-					<Route path="/compounds/:comp_id" element={<Compound />} />
+					<Route path="/compounds/:comp_id" element={<ViewDetail />} />
 				</Routes>
 			</div>
 		</Router>
