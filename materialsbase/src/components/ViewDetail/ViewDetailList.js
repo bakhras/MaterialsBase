@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import "./ViewDetail.css"
 
 const ViewDetailList = ({type,value}) => {

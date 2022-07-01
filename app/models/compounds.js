@@ -38,7 +38,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'compounds',
-    schema: 'webapp',
     timestamps: false,
     indexes: [
       {
