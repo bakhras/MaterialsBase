@@ -2,10 +2,10 @@ import React from 'react'
 import './ViewList.css'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { retrieveCompound, retrieveCompounds, findCompoundByTitle, deleteAllCompounds } from '../../Compounds/Action/compoundAction';
+import { useDispatch, useSelector, dispatch } from 'react-redux';
+import { retrieveCompounds, findCompoundByTitle, deleteAllCompounds } from '../../actions/compounds';
 
-const ViewList = ({idx, materials, notations, component}) => {
+const ViewList = () => {
   //initial state
   const [currentCompound, setCurrentCompound] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -13,18 +13,45 @@ const ViewList = ({idx, materials, notations, component}) => {
   const compounds = useSelector(state => state.compounds);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(retrieveCompounds());
-  },[]);
+  //utility function to create rows
+  const ViewListContainer = () => {
+    <div className="container">
+        <h1>Compounds</h1>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search By Title"/>
+          <button type="button" class="btn btn-outline-secondary">search</button>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <th scope="col">PubChemID</th>
+              <th scope="col">Compounds Materials</th>
+              <th scope="col">Compounds Notation</th>
+              <th scope="col">Compounds Component</th>
+              <th scope="col">Compounds Properties  </th>
+              <th scope="col">Mol2</th>
+            </tr>
+            {compounds.map((item) => (
+                  <ViewList
+                  key={item.comp_id}
+                  idx={item.comp_index}
+                  materials={item.comp_material}
+                  notations={item.comp_notation}
+                  component="detail.."/>
+              ))}
+            </tbody>
+        </table>
+    </div>
+};
+
+	//utility functions for page
+	useEffect(() => {
+		dispatch(retrieveCompounds());
+	},[]);
 
   	const onChangeSearchTitle = e => {
 		const searchTitle = e.target.value;
 		setSearchTitle(searchTitle);
-	};
-
-	const onChangeSearchID = e => {
-		const searchID = e.target.value;
-		setCurrentIndex(currentIndex);
 	};
 
 	const refreshData = () => {
@@ -48,10 +75,6 @@ const ViewList = ({idx, materials, notations, component}) => {
 		});
 	};
 
-  const findByID = (index) =>{
-    refreshData();
-    dispatch(retrieveCompound(index));
-  }
 
 	const findByTitle = () => {
 		refreshData();
@@ -92,16 +115,6 @@ const ViewList = ({idx, materials, notations, component}) => {
 		link.parentNode.removeChild(link);
 	};
 
-  return (
-	<tr>
-		<th scope='row'>{idx}</th>
-		<th>{materials}</th>
-		<td>{notations}</td>
-		<td>{component}</td>
-		<td><Link to={"/compounds/"+ idx} className='detail-button'><button>Detail</button></Link></td>
-		<td><button>Download</button></td>
-	</tr>
-  )
+	return ViewListContainer();
 }
-
 export default ViewList
