@@ -19,17 +19,7 @@ const AddCompound = () => {
 
 
 	const dispatch = useDispatch();
-<<<<<<< Updated upstream
 	dispatch(createCompound);
-=======
-
-	const handleIndexChange = event => {
-		const { name, value } = event.target;
-		setCompound({ [name]: value });
-
-	};
->>>>>>> Stashed changes
-
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCompound({ ...compound, [name]: value });
@@ -150,7 +140,7 @@ const AddCompound = () => {
 		  			accept=".mol2, .txt"
 		  			className="form-control"
 		  			id="comp_mol2"
-		  			value={compound.comp_index}
+		  			value={compound.comp_mol2}
 		  			onChange={handleFileUpload}
 		  			name="comp_index"
 		  		/>
