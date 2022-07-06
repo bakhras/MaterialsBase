@@ -22,5 +22,5 @@ module.exports = app => {
 	router.delete("/", compounds.deleteAll);
 
 	// finally, use the router for the app
-	app.use("api/compounds", router);
+	app.use("/api/compounds", router);
 };

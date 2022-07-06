@@ -91,7 +91,7 @@ app.use(session({
 
 // produces a cors middleware route to localhost for express
 var corsOptions = {
-	origin: "http://localhost:8081"
+	origin: "http://localhost:3000"
 };
 
 // use cors to provide connection config

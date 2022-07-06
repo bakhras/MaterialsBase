@@ -3,37 +3,23 @@ import { useDispatch } from "react-redux";
 import { createCompound } from "../actions/compounds";
 import Papa from "papaparse"; /* csv extraction */
 
-const AddCompound = () => {
+const ModifyCompound = () => {
 	const initialCompoundState = {
 		comp_index: "",
 		comp_material: "",
 		comp_notation: "",
-		comp_mol2: "",
+		comp_mol2: null,
 		comp_components: "",
-		comp_properties: "",
+		comp_properties: null,
 	};
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
-
-
-
 	const dispatch = useDispatch();
-<<<<<<< Updated upstream
-	dispatch(createCompound);
-=======
-
-	const handleIndexChange = event => {
-		const { name, value } = event.target;
-		setCompound({ [name]: value });
-
-	};
->>>>>>> Stashed changes
-
 	const handleInputChange = event => {
 		const { name, value } = event.target;
-		setCompound({ ...compound, [name]: value });
 
+		setCompound({ ...compound, [name]: value });
 	};
 
 	const handleFileUpload = event => {
@@ -53,39 +39,28 @@ const AddCompound = () => {
 	};
 
 	const saveCompound = () => {
-		const {
-			comp_index,
+		const { comp_index,
 			comp_material,
 			comp_notation,
 			comp_mol2,
 			comp_components,
-			comp_properties
-		 } = compound;
-
-		dispatch(createCompound(
-			comp_index,
-			comp_material,
-			comp_notation,
-			comp_mol2,
-			comp_components,
-			comp_properties
-		))
-			.then(data => {
-				setCompound({
-					comp_index: data.comp_index,
-					comp_material: data.comp_material,
-					comp_notation: data.comp_notation,
-					comp_mol2: data.comp_mol2,
-					comp_components: data.comp_components,
-					comp_properties: data.comp_properties,
-        			});
-        			setSubmitted(true);
-
-        			console.log(data);
-      			})
-			.catch(e => {
-				console.log(e);
+			comp_properties } = compound;
+		dispatch(createCompound(comp_index, comp_material, comp_notation, comp_mol2, comp_components, comp_properties))
+		.then(data => {
+			setCompound({
+				comp_index: data.comp_index,
+				comp_material: data.comp_material,
+				comp_notation: data.comp_notation,
+				comp_mol2: data.comp_mol2,
+				comp_components: data.comp_components,
+				comp_properties: data.comp_properties,
 			});
+			setSubmitted(true);
+			console.log(data);
+		})
+		.catch(e => {
+			console.log(e);
+		});
 	};
 
 	const newCompound = () => {
@@ -93,10 +68,8 @@ const AddCompound = () => {
 		setSubmitted(false);
 	};
 
-
-
   return(
-	  <div className="submit-form">
+	<div className="submit-form">
 	  {submitted ? (
 		  <div>
 			<h4>Compound data submitted succesfully!</h4>
@@ -137,6 +110,7 @@ const AddCompound = () => {
 		  			className="form-control"
 		  			id="comp_notation"
 		  			required
+
 		  			value={compound.comp_notation}
 		  			onChange={handleInputChange}
 		  			name="comp_notation"
@@ -174,4 +148,4 @@ const AddCompound = () => {
 	);
 };
 
-export default AddCompound;
+export default ModifyCompound;
