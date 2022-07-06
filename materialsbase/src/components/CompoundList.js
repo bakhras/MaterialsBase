@@ -1,11 +1,10 @@
-import React from 'react'
-import './ViewList.css'
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, dispatch } from 'react-redux';
-import { retrieveCompounds, findCompoundByTitle, deleteAllCompounds } from '../../actions/compounds';
+import React, {useState, useEffect } from 'react'
+// import './ViewList.css'
+//import { Link } from 'react-router-dom';
+import { useDispatch, useSelector, dispatch } from 'react-redux'
+import { retrieveCompounds, findCompoundByTitle, deleteAllCompounds } from '../actions/compounds';
 
-const ViewList = () => {
+const CompoundList = () => {
   //initial state
   const [currentCompound, setCurrentCompound] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -14,34 +13,47 @@ const ViewList = () => {
   const dispatch = useDispatch();
 
   //utility function to create rows
-  const ViewListContainer = () => {
-    <div className="container">
-        <h1>Compounds</h1>
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search By Title"/>
-          <button type="button" class="btn btn-outline-secondary">search</button>
-        </div>
-        <table>
-          <tbody>
-            <tr>
-              <th scope="col">PubChemID</th>
-              <th scope="col">Compounds Materials</th>
-              <th scope="col">Compounds Notation</th>
-              <th scope="col">Compounds Component</th>
-              <th scope="col">Compounds Properties  </th>
-              <th scope="col">Mol2</th>
-            </tr>
-            {compounds.map((item) => (
-                  <ViewList
-                  key={item.comp_id}
-                  idx={item.comp_index}
-                  materials={item.comp_material}
-                  notations={item.comp_notation}
-                  component="detail.."/>
-              ))}
-            </tbody>
-        </table>
-    </div>
+  const CompoundListContainer = () => {
+	<div className="container">
+		<h1>Compounds</h1>
+		<div class="input-group">
+			<input
+	  			type="text"
+	  			class="form-control"
+	  			placeholder="Search By Title"
+	  			value={searchTitle}
+	  			onChange={onChangeSearchTitle}
+		  	/>
+		  	<button
+	  			type="button"
+	  			class="btn btn-outline-secondary"
+	  			onclick={findCompoundByTitle}
+		  	>
+		  		search
+		  	</button>
+		</div>
+		<div>
+			<table>
+		  		<tbody>
+					<tr>
+		  				<th scope="col">ID</th>
+		  				<th scope="col">Name</th>
+		  				<th scope="col">Notation</th>
+		  			</tr>
+		  			{compounds &&
+						compounds.map((compound, index) => (
+							<CompoundList
+								onClick={() => setActiveCompound(compound, index)}
+								key={index}
+								ID={compound.comp_index}
+								Name={compound.comp_material}
+	  							Notation={compound.comp_notation}
+							/>
+					))}
+	  			</tbody>
+			</table>
+		</div>
+	</div>
 };
 
 	//utility functions for page
@@ -115,6 +127,6 @@ const ViewList = () => {
 		link.parentNode.removeChild(link);
 	};
 
-	return ViewListContainer();
+	return CompoundListContainer();
 }
-export default ViewList
+export default CompoundList

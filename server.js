@@ -111,7 +111,7 @@ app.get("/", (req,res) => {
 
 // utilize sequelize for the DB model
 const db = require('./app/models');
-db.sequelize.sync({force:true}).then(() => {
+db.sequelize.sync({force:false}).then(() => {
 	console.log("Dropping and resyncing DB.");
 });
 
@@ -119,6 +119,9 @@ db.sequelize.sync({force:true}).then(() => {
 // initialize express routes for database controllers
 require("./app/routes/user_routes.js")(app);
 require("./app/routes/compound_routes.js")(app);
+
+
+console.log("express routes loaded");
 
 
 // set port, listen for requests

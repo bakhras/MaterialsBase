@@ -15,12 +15,7 @@ const AddCompound = () => {
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
-
-
-
 	const dispatch = useDispatch();
-	dispatch(createCompound);
-
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCompound({ ...compound, [name]: value });
@@ -43,39 +38,28 @@ const AddCompound = () => {
 	};
 
 	const saveCompound = () => {
-		const {
-			comp_index,
+		const { comp_index,
 			comp_material,
 			comp_notation,
 			comp_mol2,
 			comp_components,
-			comp_properties
-		 } = compound;
-
-		dispatch(createCompound(
-			comp_index,
-			comp_material,
-			comp_notation,
-			comp_mol2,
-			comp_components,
-			comp_properties
-		))
-			.then(data => {
-				setCompound({
-					comp_index: data.comp_index,
-					comp_material: data.comp_material,
-					comp_notation: data.comp_notation,
-					comp_mol2: data.comp_mol2,
-					comp_components: data.comp_components,
-					comp_properties: data.comp_properties,
-        			});
-        			setSubmitted(true);
-
-        			console.log(data);
-      			})
-			.catch(e => {
-				console.log(e);
+			comp_properties } = compound;
+		dispatch(createCompound(comp_index, comp_material, comp_notation, comp_mol2, comp_components, comp_properties))
+		.then(data => {
+			setCompound({
+				comp_index: data.comp_index,
+				comp_material: data.comp_material,
+				comp_notation: data.comp_notation,
+				comp_mol2: data.comp_mol2,
+				comp_components: data.comp_components,
+				comp_properties: data.comp_properties,
 			});
+			setSubmitted(true);
+			console.log(data);
+		})
+		.catch(e => {
+			console.log(e);
+		});
 	};
 
 	const newCompound = () => {
