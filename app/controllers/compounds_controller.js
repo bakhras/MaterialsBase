@@ -34,7 +34,7 @@ exports.create = (req, res) => {
 	});
 };
 
-exports.findAll = (res) => {
+exports.findAll = (req,res) => {
 	Compound.findAll()
 	.then(data => {
 		res.send(data);

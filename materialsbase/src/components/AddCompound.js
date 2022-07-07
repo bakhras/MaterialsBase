@@ -8,17 +8,22 @@ const AddCompound = () => {
 		comp_index: "",
 		comp_material: "",
 		comp_notation: "",
-		comp_mol2: null,
+		comp_mol2: "",
 		comp_components: "",
-		comp_properties: null,
+		comp_properties: "",
 	};
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
+
+
+
 	const dispatch = useDispatch();
+	dispatch(createCompound);
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCompound({ ...compound, [name]: value });
+
 	};
 
 	const handleFileUpload = event => {
@@ -38,28 +43,39 @@ const AddCompound = () => {
 	};
 
 	const saveCompound = () => {
-		const { comp_index,
+		const {
+			comp_index,
 			comp_material,
 			comp_notation,
 			comp_mol2,
 			comp_components,
-			comp_properties } = compound;
-		dispatch(createCompound(comp_index, comp_material, comp_notation, comp_mol2, comp_components, comp_properties))
-		.then(data => {
-			setCompound({
-				comp_index: data.comp_index,
-				comp_material: data.comp_material,
-				comp_notation: data.comp_notation,
-				comp_mol2: data.comp_mol2,
-				comp_components: data.comp_components,
-				comp_properties: data.comp_properties,
+			comp_properties
+		 } = compound;
+
+		dispatch(createCompound(
+			comp_index,
+			comp_material,
+			comp_notation,
+			comp_mol2,
+			comp_components,
+			comp_properties
+		))
+			.then(data => {
+				setCompound({
+					comp_index: data.comp_index,
+					comp_material: data.comp_material,
+					comp_notation: data.comp_notation,
+					comp_mol2: data.comp_mol2,
+					comp_components: data.comp_components,
+					comp_properties: data.comp_properties,
+        			});
+        			setSubmitted(true);
+
+        			console.log(data);
+      			})
+			.catch(e => {
+				console.log(e);
 			});
-			setSubmitted(true);
-			console.log(data);
-		})
-		.catch(e => {
-			console.log(e);
-		});
 	};
 
 	const newCompound = () => {
@@ -67,8 +83,10 @@ const AddCompound = () => {
 		setSubmitted(false);
 	};
 
+
+
   return(
-	<div className="submit-form">
+	  <div className="submit-form">
 	  {submitted ? (
 		  <div>
 			<h4>Compound data submitted succesfully!</h4>
@@ -82,7 +100,7 @@ const AddCompound = () => {
 		  			type="text"
 		  			className="form-control"
 		  			id="comp_index"
-
+		  			required
 		  			value={compound.comp_index}
 		  			onChange={handleInputChange}
 		  			name="comp_index"
@@ -109,7 +127,6 @@ const AddCompound = () => {
 		  			className="form-control"
 		  			id="comp_notation"
 		  			required
-
 		  			value={compound.comp_notation}
 		  			onChange={handleInputChange}
 		  			name="comp_notation"
@@ -123,7 +140,7 @@ const AddCompound = () => {
 		  			accept=".mol2, .txt"
 		  			className="form-control"
 		  			id="comp_mol2"
-		  			value={compound.comp_index}
+		  			value={compound.comp_mol2}
 		  			onChange={handleFileUpload}
 		  			name="comp_index"
 		  		/>

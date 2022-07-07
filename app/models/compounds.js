@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     comp_index: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(64),
       allowNull: false,
       unique: "table_uq_1"
     },
