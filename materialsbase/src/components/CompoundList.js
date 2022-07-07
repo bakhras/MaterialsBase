@@ -14,6 +14,7 @@ const CompoundsList = () => {
 	const [searchTitle, setSearchTitle] = useState("");
 	const compounds = useSelector(state => state.compounds);
 	const dispatch = useDispatch();
+	const [viewMode, setViewMode] = useState(false);
 
 	useEffect(() => {
 		dispatch(retrieveCompounds());
@@ -88,8 +89,13 @@ const CompoundsList = () => {
 		return compounds.comp_material.toLowerCase().includes(searchTitle.toLowerCase())
 	});
 
+	const handleView = () => {
+		setViewMode(true);
+	}
+
 	return (
-		<div className="list row">
+		<div className="container">
+		<div className="row">
 			<div className="col-md-8">
 				<div className="input-group mb-3">
 					<input
@@ -99,17 +105,12 @@ const CompoundsList = () => {
 						value={searchTitle}
 						onChange={onChangeSearchTitle}
 					/>
-					<div className="input-group-append">
-						<button
-							className="btn btn-outline-dark"
-							type="button"
-							onClick={findByTitle}
-						>Search</button>
-					</div>
 				</div>
 			</div>
+		</div>
+		<div className="row">
 
-		<div className="col-md-6">
+		<div className="col">
 			<h4>Compounds List</h4>
 			<ul className="list-group">
 				{filteredCompound &&
@@ -130,16 +131,22 @@ const CompoundsList = () => {
 				onClick={removeAllCompounds}
 			>Remove All</button>
 		</div>
-		<div className="col-md-6">
+		<div className="col">
 			{currentCompound ? (
 				<div>
 					<h4>Compound</h4>
 
 					<div>
 					<label>
-						<strong>Material:</strong>
+						<strong>PubChemID:</strong>
 					</label>
-					<strong>{ " " + currentCompound.comp_material}</strong>
+					<strong>{ " " + currentCompound.comp_index}</strong>
+				</div>
+				<div>
+					<label>
+						<strong>Materials:</strong>
+					</label>
+					{ " " + currentCompound.comp_material}
 				</div>
 				<div>
 					<label>
@@ -147,17 +154,25 @@ const CompoundsList = () => {
 					</label>
 					{ " " + currentCompound.comp_notation}
 				</div>
+				<div className="imput-group-append">
+					<button
+						type="button"
+						className="btn btn-primary mb-2"
+						onClick={()=>handleView()}
+					>View Properties...
+					</button>
+				</div>
 				<div className="input-group-append">
 					<button
 						type="button"
-						className="btn btn-outline-grey"
+						className="btn btn-outline-dark mb-2"
 						onClick={downloadMol2}
 					>Download mol2 (.mol2)</button>
 				</div>
 				<div className="input-group-append">
 					<button
 						type="button"
-						className="btn btn-outline-grey"
+						className="btn btn-outline-dark mb-2"
 						onClick={downloadCSV}
 					>Download Properties (.csv)</button>
 				</div>
@@ -168,13 +183,43 @@ const CompoundsList = () => {
 				Edit
 				</Link>
 				</div>
+
 			) : (
 				<div>
 					<br />
 					<p>Please click on a Compound...</p>
 				</div>
 			)}
+		</div>
+		<div className="col">
+		{viewMode === true ? (
+				<div>
+				<h4> Properties Table </h4>
+				<table className="table table-striped table-bordered table-sm mt-5 w-50 overflow-auto" cellSpacing="0">
+					<thead>
+						<tr>
+						<th className="th-sm">Properties</th>
+						<th className="th-sm">Values</th>
+						</tr>
+					</thead>
+					<tbody>
+						{Object.keys(currentCompound.comp_properties).map((key,i)=> (
+						<tr>
+						<th>{key}</th>
+						<td>{currentCompound.comp_properties[key]}</td>
+						</tr>
+						))
+						}
+					</tbody>
+				</table>
+				</div>
+		) : (
+			<div>
+
 			</div>
+		)}
+		</div>
+		</div>
 		</div>
 	);
 };
