@@ -44,7 +44,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'users',
-    schema: 'webapp',
     hasTrigger: true,
     timestamps: false,
     indexes: [
