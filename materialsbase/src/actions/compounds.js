@@ -5,11 +5,11 @@ import {
 	DELETE_COMPOUND,
 	DELETE_ALL_COMPOUNDS
 } from "./types";
-import CompoundDataService from "../services/compound.service"
+import CompoundService from "../services/CompoundService"
 
 export const createCompound = (comp_index, comp_material, comp_notation, comp_mol2, comp_components, comp_properties) => async (dispatch) => {
 	try {
-		const res = await CompoundDataService.create({
+		const res = await CompoundService.create({
 			comp_index,
 			comp_material,
 			comp_notation,
@@ -30,8 +30,8 @@ export const createCompound = (comp_index, comp_material, comp_notation, comp_mo
 };
 
 export const retrieveCompounds = () => async (dispatch) => {
-	try{
-		const res = await CompoundDataService.getAll();
+	try {
+		const res = await CompoundService.getAll();
 		dispatch({
 			type: RETRIEVE_COMPOUND,
 			payload: res.data,
@@ -43,7 +43,7 @@ export const retrieveCompounds = () => async (dispatch) => {
 
 export const updateCompound = (comp_id, data) => async (dispatch) => {
 	try {
-		const res = await CompoundDataService.update(comp_id, data);
+		const res = await CompoundService.update(comp_id, data);
 
 		dispatch({
 			type: UPDATE_COMPOUND,
@@ -58,7 +58,7 @@ export const updateCompound = (comp_id, data) => async (dispatch) => {
 
 export const deleteCompound = (comp_id) => async (dispatch) => {
 	try {
-		await CompoundDataService.deleteCompound(comp_id);
+		await CompoundService.deleteCompound(comp_id);
 
 		dispatch({
 			type: DELETE_COMPOUND,
@@ -71,7 +71,7 @@ export const deleteCompound = (comp_id) => async (dispatch) => {
 
 export const deleteAllCompounds = () => async (dispatch) => {
 	try {
-		const res = await CompoundDataService.deleteAllCompounds();
+		const res = await CompoundService.deleteAllCompounds();
 
 		dispatch({
 			type: DELETE_ALL_COMPOUNDS,
@@ -86,7 +86,7 @@ export const deleteAllCompounds = () => async (dispatch) => {
 
 export const findCompoundByTitle = (title) => async (dispatch) => {
 	try {
-		const res = await CompoundDataService.findCompoundByTitle(title);
+		const res = await CompoundService.findCompoundByTitle(title);
 		dispatch({
 			type: RETRIEVE_COMPOUND,
 			payload: res.data,
