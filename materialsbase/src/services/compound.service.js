@@ -24,8 +24,9 @@ class CompoundDataService {
 		return http.delete("/compounds");
 	}
 
-	findCompoundsByTitle = title => {
-		return http.get(`/compounds?comp_index=${title}`);
+	findCompoundsByIndex = index => {
+		return http.get(`/compounds?comp_index=${index}`);
 	}
+
 }
 export default new CompoundDataService();

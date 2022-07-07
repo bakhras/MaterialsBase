@@ -10,7 +10,7 @@ import AddCompound from "./components/AddCompound";
 function App() {
 	return(
 	<div>
-		<Router>
+	<Router>
 		<MDBNavbar>
 			<MDBNavbarBrand>MaterialsBase</MDBNavbarBrand>
 		<MDBNavbarNav>
@@ -26,9 +26,8 @@ function App() {
 	<MDBContainer>
 			<Routes>
 				<Route exact path="/" element={<CompoundList />} />
-				<Route path="/compounds" element={<CompoundList />} />
 				<Route exact path="/add" element={<AddCompound />} />
-				<Route path="/compounds/:comp_id" element={<Compound/>} />
+				<Route path="/:comp_id" element={<Compound/>} />
 			</Routes>
 	</MDBContainer>
 	</Router>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, dispatch } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	retrieveCompounds,
-	findCompoundByTitle,
+	findCompoundById,
+	findCompoundByIndex,
 	deleteAllCompounds,
 } from "../actions/compounds";
 
@@ -46,7 +47,7 @@ const CompoundsList = () => {
 
 	const findByTitle = () => {
 		refreshData();
-		dispatch(findCompoundByTitle(searchTitle));
+		dispatch(findCompoundByIndex(searchTitle));
 	};
 
 	const downloadMol2 = () => {
@@ -83,6 +84,9 @@ const CompoundsList = () => {
 		link.parentNode.removeChild(link);
 	};
 
+	const filteredCompound = compounds.filter(compounds=>{
+		return compounds.comp_material.toLowerCase().includes(searchTitle.toLowerCase())
+	});
 
 	return (
 		<div className="list row">
@@ -91,13 +95,13 @@ const CompoundsList = () => {
 					<input
 						type="text"
 						className="form-control"
-						placeholder="Search by title"
+						placeholder="Search by name"
 						value={searchTitle}
 						onChange={onChangeSearchTitle}
 					/>
 					<div className="input-group-append">
 						<button
-							className="btn btn-outline-secondary"
+							className="btn btn-outline-dark"
 							type="button"
 							onClick={findByTitle}
 						>Search</button>
@@ -108,17 +112,17 @@ const CompoundsList = () => {
 		<div className="col-md-6">
 			<h4>Compounds List</h4>
 			<ul className="list-group">
-				{compounds &&
-				compounds.map((compound, index) => (
-					<li
+				{filteredCompound &&
+				filteredCompound.map((compound, index) => (
+					<strong><li
 						className={
 							"list-group-item " + (index === currentIndex ? "active" : "")
 						}
 						onClick={() => setActiveCompound(compound, index)}
-						key={index}
+						key={compound.comp_id}
 					>
 						{compound.comp_material}
-					</li>
+					</li></strong>
 				))}
 			</ul>
 			<button
@@ -129,36 +133,37 @@ const CompoundsList = () => {
 		<div className="col-md-6">
 			{currentCompound ? (
 				<div>
-					<h4>Compund</h4>
+					<h4>Compound</h4>
+
 					<div>
 					<label>
 						<strong>Material:</strong>
-					</label>{" "}
-					{currentCompound.comp_material}
+					</label>
+					<strong>{ " " + currentCompound.comp_material}</strong>
 				</div>
 				<div>
 					<label>
 						<strong>Notation:</strong>
-					</label>{" "}
-					{currentCompound.comp_notation}
+					</label>
+					{ " " + currentCompound.comp_notation}
 				</div>
-				<div classname="input-group-append">
+				<div className="input-group-append">
 					<button
-						classname="btn btn-outline-secondary"
 						type="button"
-						onclick={downloadMol2}
-					>download mol2</button>
+						className="btn btn-outline-grey"
+						onClick={downloadMol2}
+					>Download mol2 (.mol2)</button>
 				</div>
-				<div classname="input-group-append">
+				<div className="input-group-append">
 					<button
-						classname="btn btn-outline-secondary"
 						type="button"
-						onclick={downloadCSV}
-					>download properties csv</button>
+						className="btn btn-outline-grey"
+						onClick={downloadCSV}
+					>Download Properties (.csv)</button>
 				</div>
 				<Link
-					to={"/compounds/" + currentCompound.comp_index}
-					className="badge badge-warning"
+					to={"/" + currentCompound.comp_id}
+					className="badge badge-primary mt-2 w-25 p-3"
 				>
 				Edit
 				</Link>

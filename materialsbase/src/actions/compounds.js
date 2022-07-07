@@ -58,7 +58,7 @@ export const updateCompound = (comp_id, data) => async (dispatch) => {
 
 export const deleteCompound = (comp_id) => async (dispatch) => {
 	try {
-		await CompoundDataService.deleteCompound(comp_id);
+		await CompoundDataService.remove(comp_id);
 
 		dispatch({
 			type: DELETE_COMPOUND,
@@ -71,7 +71,7 @@ export const deleteCompound = (comp_id) => async (dispatch) => {
 
 export const deleteAllCompounds = () => async (dispatch) => {
 	try {
-		const res = await CompoundDataService.deleteAllCompounds();
+		const res = await CompoundDataService.removeAll();
 
 		dispatch({
 			type: DELETE_ALL_COMPOUNDS,
@@ -84,9 +84,21 @@ export const deleteAllCompounds = () => async (dispatch) => {
 	}
 };
 
-export const findCompoundByTitle = (title) => async (dispatch) => {
+export const findCompoundByIndex = (index) => async (dispatch) => {
 	try {
-		const res = await CompoundDataService.findCompoundByTitle(title);
+		const res = await CompoundDataService.findCompoundsByIndex(index);
+		dispatch({
+			type: RETRIEVE_COMPOUND,
+			payload: res.data,
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+export const findCompoundById = (id) => async (dispatch) => {
+	try {
+		const res = await CompoundDataService.get(id);
 		dispatch({
 			type: RETRIEVE_COMPOUND,
 			payload: res.data,
