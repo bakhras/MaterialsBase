@@ -23,8 +23,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     comp_mol2: {
       // TO-DO: write a json parser for mol2 files
-      //type: DataTypes.JSONB,
-      type: DataTypes.TEXT,
+      type: DataTypes.JSONB,
+      //type: DataTypes.TEXT,
       allowNull: true
     },
     comp_components: {

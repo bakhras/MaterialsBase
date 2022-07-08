@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { updateCompound, deleteCompound } from "../actions/compounds";
-import CompoundService from "../services/CompoundService";
-import Papa from "papaparse";
-
+import CompoundDataService from "../services/compound.service";
 
 const Compound = (props) => {
-	// set initial state to empty on page build to reset DOM
+
 	const initialCompoundState = {
 		comp_index: "",
 		comp_material: "",
@@ -17,38 +15,25 @@ const Compound = (props) => {
 		comp_properties: null,
 	};
 
-	const comp_id = useParams();
-
-	// set up initial page state
+	const id = useParams();
 	const [currentCompound, setCurrentCompound] = useState(initialCompoundState);
 	const [message, setMessage] = useState("");
 	const dispatch = useDispatch();
-
-	// grab the actual state of compound from the reducer data service
-	const getCompound = (comp_id) => {
-		CompoundService.get(comp_id)
+	const getCompound = () => {
+		CompoundDataService.get(id.comp_id)
 		.then(response => {
 			setCurrentCompound(response.data);
-			console.log(response.data);
 		})
 		.catch(err => {
 			console.log(err);
 		});
 	};
+
 	useEffect(() => {
-		getCompound(props.match.params.comp_id);
-	}, [props.match.params.comp_id]);
+		getCompound();
+	}, []);
 
-	//const {index} = useParams();
-	const mol2 = currentCompound.comp_mol2;
-	const [value,setValue] = React.useState('atom');
-	//const [value] = React.useState('atom');
-
-	const handleChange = (event) => {
-		setValue(event.target.value);
-	};
-
-	const handleInputChange = (event) => {
+	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCurrentCompound({ ...currentCompound, [name]: value });
 	};
@@ -65,8 +50,7 @@ const Compound = (props) => {
 		};
 		dispatch(updateCompound(currentCompound.comp_id, data))
 		.then(response => {
-			console.log(response);
-			setCurrentCompound({...currentCompound});
+			console.log(response.data);
 			setMessage("The compound was updated successfully.");
 		})
 		.catch(err => {
@@ -92,83 +76,71 @@ const Compound = (props) => {
 		})
 		.catch(err => {
 			console.log(err);
-	});
-};
+		});
 
-return (
-	<div>
-		<div className='top'>
-			<div className='header'>
-				<h5>Compound Summary</h5>
+	};
+
+	return (
+		<div>
+		{console.log(currentCompound)}
+		{currentCompound ? (
+				<div className="edit-form">
+					<h4>Compound</h4>
+					<form>
+						<div className="form-group">
+							<label htmlFor="comp_index">comp_index</label>
+							<input
+								type="text"
+								className="form-control"
+								id="comp_index"
+								name="comp_index"
+								value={currentCompound.comp_index}
+								onChange={handleInputChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="comp_">comp_material</label>
+							<input
+								type="text"
+								className="form-control"
+								id="comp_material"
+								name="comp_material"
+								value={currentCompound.comp_material}
+								onChange={handleInputChange}
+							/>
+						</div>
+						<div className="form-group">
+							<label htmlFor="comp_notation">comp_notation</label>
+							<input
+								type="text"
+								className="form-control"
+								id="comp_notation"
+								name="comp_notation"
+								value={currentCompound.comp_notation}
+								onChange={handleInputChange}
+							/>
+						</div>
+
+				</form>
+				<button
+					className="badge badge-danger mx-2 mt-4"
+					onClick={removeCompound}
+					>Delete</button>
+				<button
+					type="Submit"
+					className="badge badge-success"
+					onClick={updateContent}
+					>Update</button>
+				<p>{message}</p>
 			</div>
-			<div className='notation'>
-				<h1> currentCompound.comp_notation </h1>
-			</div>
-			<h5 className='sub-name-left'>Properties</h5>
-          		<h5 className='sub-name-right'>
-				Mol2:
-					<select value={value} onChange={handleChange}>
-					<option value='molecular'>molecular</option>
-					<option value='atom'>atom</option>
-					<option value='bond'>bond</option></select>
-          		</h5>
-      		</div>
-		<div className='bot'>
-        		<div className="bot-left">
-          			<table>
-            				<tbody>
-						<tr>
-							<th>Descriptors</th>
-							<th>Value</th>
-						</tr>
-              					{
-                				Object.keys(mol2).map((item)=>(
-                  					// console.log(item)
-                  					<Compound
-                  					type = {item}
-                  					value = {mol2[item]} />
-                				))
-              					}
-            				</tbody>
-          			</table>
-			</div>
-			<div className='bot-right'>
-				<table>
-					<tbody>
-						<tr>
-							<th></th>
-							<th></th>
-        	    				</tr>
-						{value === "molecular" ? Object.keys(mol2[0]).map((item)=>(
-							// console.log(item)
-							<Compound
-							type = {item}
-							value = {mol2[0][item]} />
-						)) : value === "atom" ? Object.keys(mol2[1]).map((item)=>(
-							// console.log(item)
-							<Compound
-							type = {item}
-							value = {mol2[1][item]} />
-						)) : Object.keys(mol2[2]).map((item)=>(
-							// console.log(item)
-							<Compound
-							type = {item}
-							value = {mol2[2][item]} />
-						))}
-					</tbody>
-				</table>
-			</div>
-			<div className='bot-right-2'>
-				<h4>Convert to CSV File</h4>
-					<p>Select all your neccesary descriptors and click "CONVERT" to generate a CSV File with selected descriptors</p>
-          			<button>CONVERT</button>
-			        <h4>Download Mol2 File</h4>
-		       		<p>Select all your neccesary descriptors and click "DOWNLOAD" to download a mol2 File of the compound</p>
-          			<button>DOWNLOAD</button>
-        		</div>
+			) : (
+				<div>
+					<br />
+					<p>Please click on a compound...</p>
+				</div>
+		)}
 		</div>
-	</div>
-  )
-}
+	);
+};
 
 export default Compound;
