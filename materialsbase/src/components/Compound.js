@@ -123,7 +123,7 @@ const Compound = (props) => {
 
 				</form>
 				<button
-					className="badge badge-danger mr-2"
+					className="badge badge-danger mx-2 mt-4"
 					onClick={removeCompound}
 					>Delete</button>
 				<button

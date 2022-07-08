@@ -7,6 +7,7 @@ import {
 	findCompoundByIndex,
 	deleteAllCompounds,
 } from "../actions/compounds";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
 
 const CompoundsList = () => {
 	const [currentCompound, setCurrentCompound] = useState(null);
@@ -112,7 +113,7 @@ const CompoundsList = () => {
 
 		<div className="col">
 			<h4>Compounds List</h4>
-			<ul className="list-group">
+			<ul className="list-group" style={{display:"block", height:"500px", overflow:"auto"}}>
 				{filteredCompound &&
 				filteredCompound.map((compound, index) => (
 					<strong><li
@@ -187,7 +188,14 @@ const CompoundsList = () => {
 			) : (
 				<div>
 					<br />
-					<p>Please click on a Compound...</p>
+					<MDBCard style={{ maxWidth: '22rem' }}>
+						<MDBCardBody>
+							<MDBCardTitle className="fw-bold">Quick Manual</MDBCardTitle>
+							<MDBCardText>
+								The left side is a list of compounds that are available on <strong>MaterialsBase</strong> database. Please click on a compound to see more detail or edit it. Please click on the Add button to add more compounds to the database.<br/><br/> Thank you !
+							</MDBCardText>
+						</MDBCardBody>
+					</MDBCard>
 				</div>
 			)}
 		</div>
@@ -195,17 +203,17 @@ const CompoundsList = () => {
 		{viewMode === true ? (
 				<div>
 				<h4> Properties Table </h4>
-				<table className="table table-striped table-bordered table-sm mt-5 w-50 overflow-auto" cellSpacing="0">
+				<table className="table table-striped table-bordered table-sm mt-2" style={{display:"block",height:"400px",width:"230px", overflow:"auto"}}>
 					<thead>
 						<tr>
-						<th className="th-sm">Properties</th>
-						<th className="th-sm">Values</th>
+						<th className="th-sm fw-bold">Properties</th>
+						<th className="th-sm fw-bold">Values</th>
 						</tr>
 					</thead>
 					<tbody>
 						{Object.keys(currentCompound.comp_properties).map((key,i)=> (
 						<tr>
-						<th>{key}</th>
+						<td className="fw-bold">{key}</td>
 						<td>{currentCompound.comp_properties[key]}</td>
 						</tr>
 						))

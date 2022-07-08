@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCompound } from "../actions/compounds";
 import Papa from "papaparse"; /* csv extraction */
+import { Link } from "react-router-dom";
 
 const AddCompound = () => {
 	const initialCompoundState = {
@@ -91,6 +92,9 @@ const AddCompound = () => {
 		  <div>
 			<h4>Compound data submitted succesfully!</h4>
 			<button className="btn btn-success" onClick={newCompound}>Add</button>
+		  	<button className="btn btn-success text-light">
+		  		<Link to={"/"}>Home</Link>
+		  	</button>
 		  </div>
 	  ) : (
 		  <div>
@@ -157,7 +161,7 @@ const AddCompound = () => {
 		  			name="comp_properties"
 		  		/>
 		  	</div>
-		  	<button onClick={saveCompound} className="btn btn-success">Submit</button>
+		  	<button onClick={saveCompound} className="btn btn-success mt-2">Submit</button>
 		  </div>
 		)}
 	  </div>
