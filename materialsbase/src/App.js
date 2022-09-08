@@ -13,7 +13,7 @@ function App() {
 		<nav className="navbar navbar-expand-lg navbar-light bg-light border border-5 mb-4">
 			<div className="container-fluid">
 				<div className="navbar-brand me-2 fw-bold fs-3">
-					<Link to ={"/"}>MaterialsBase</Link>
+					<Link to ={"/"}>Materials Base</Link>
 				</div>
 
 				<nav aria-label="breadcrumb">
