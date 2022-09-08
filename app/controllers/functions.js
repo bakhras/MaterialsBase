@@ -1,6 +1,6 @@
 // a function for generating db object ids
 module.exports.gen_id = (pre) => {
-	var result = '';
+	var result = pre + '_';
 	const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	for ( var i = 6; i > 0; --i) {
 		result += chars[Math.round(Math.random() * (chars.length - 1))];

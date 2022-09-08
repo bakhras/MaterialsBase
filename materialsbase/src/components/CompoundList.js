@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, dispatch } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	retrieveCompounds,
-	findCompoundByTitle,
+	findCompoundById,
+	findCompoundByIndex,
 	deleteAllCompounds,
 } from "../actions/compounds";
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
 
 const CompoundsList = () => {
 	const [currentCompound, setCurrentCompound] = useState(null);
@@ -13,6 +15,7 @@ const CompoundsList = () => {
 	const [searchTitle, setSearchTitle] = useState("");
 	const compounds = useSelector(state => state.compounds);
 	const dispatch = useDispatch();
+	const [viewMode, setViewMode] = useState(false);
 
 	useEffect(() => {
 		dispatch(retrieveCompounds());
@@ -46,7 +49,7 @@ const CompoundsList = () => {
 
 	const findByTitle = () => {
 		refreshData();
-		dispatch(findCompoundByTitle(searchTitle));
+		dispatch(findCompoundByIndex(searchTitle));
 	};
 
 	const downloadMol2 = () => {
@@ -83,42 +86,45 @@ const CompoundsList = () => {
 		link.parentNode.removeChild(link);
 	};
 
+	const filteredCompound = compounds.filter(compounds=>{
+		return compounds.comp_material.toLowerCase().includes(searchTitle.toLowerCase())
+	});
+
+	const handleView = () => {
+		setViewMode(true);
+	}
 
 	return (
-		<div className="list row">
+		<div className="container">
+		<div className="row">
 			<div className="col-md-8">
 				<div className="input-group mb-3">
 					<input
 						type="text"
 						className="form-control"
-						placeholder="Search by title"
+						placeholder="Search by name"
 						value={searchTitle}
 						onChange={onChangeSearchTitle}
 					/>
-					<div className="input-group-append">
-						<button
-							className="btn btn-outline-secondary"
-							type="button"
-							onClick={findByTitle}
-						>Search</button>
-					</div>
 				</div>
 			</div>
+		</div>
+		<div className="row">
 
-		<div className="col-md-6">
+		<div className="col">
 			<h4>Compounds List</h4>
-			<ul className="list-group">
-				{compounds &&
-				compounds.map((compound, index) => (
-					<li
+			<ul className="list-group" style={{display:"block", height:"500px", overflow:"auto"}}>
+				{filteredCompound &&
+				filteredCompound.map((compound, index) => (
+					<strong><li
 						className={
 							"list-group-item " + (index === currentIndex ? "active" : "")
 						}
 						onClick={() => setActiveCompound(compound, index)}
-						key={index}
+						key={compound.comp_id}
 					>
 						{compound.comp_material}
-					</li>
+					</li></strong>
 				))}
 			</ul>
 			<button
@@ -126,50 +132,102 @@ const CompoundsList = () => {
 				onClick={removeAllCompounds}
 			>Remove All</button>
 		</div>
-		<div className="col-md-6">
+		<div className="col">
 			{currentCompound ? (
 				<div>
-					<h4>Compund</h4>
+					<h4>Compound</h4>
+
 					<div>
 					<label>
-						<strong>Material:</strong>
-					</label>{" "}
-					{currentCompound.comp_material}
+						<strong>PubChemID:</strong>
+					</label>
+					<strong>{ " " + currentCompound.comp_index}</strong>
+				</div>
+				<div>
+					<label>
+						<strong>Materials:</strong>
+					</label>
+					{ " " + currentCompound.comp_material}
 				</div>
 				<div>
 					<label>
 						<strong>Notation:</strong>
-					</label>{" "}
-					{currentCompound.comp_notation}
+					</label>
+					{ " " + currentCompound.comp_notation}
 				</div>
-				<div classname="input-group-append">
+				<div className="imput-group-append">
 					<button
-						classname="btn btn-outline-secondary"
 						type="button"
-						onclick={downloadMol2}
-					>download mol2</button>
+						className="btn btn-primary mb-2"
+						onClick={()=>handleView()}
+					>View Properties...
+					</button>
 				</div>
-				<div classname="input-group-append">
+				<div className="input-group-append">
 					<button
-						classname="btn btn-outline-secondary"
 						type="button"
-						onclick={downloadCSV}
-					>download properties csv</button>
+						className="btn btn-outline-dark mb-2"
+						onClick={downloadMol2}
+					>Download mol2 (.mol2)</button>
+				</div>
+				<div className="input-group-append">
+					<button
+						type="button"
+						className="btn btn-outline-dark mb-2"
+						onClick={downloadCSV}
+					>Download Properties (.csv)</button>
 				</div>
 				<Link
-					to={"/compounds/" + currentCompound.comp_index}
-					className="badge badge-warning"
+					to={"/" + currentCompound.comp_id}
+					className="badge badge-primary mt-2 w-25 p-3"
 				>
 				Edit
 				</Link>
 				</div>
+
 			) : (
 				<div>
 					<br />
-					<p>Please click on a Compound...</p>
+					<MDBCard style={{ maxWidth: '22rem' }}>
+						<MDBCardBody>
+							<MDBCardTitle className="fw-bold">Quick Manual</MDBCardTitle>
+							<MDBCardText>
+								The left side is a list of compounds that are available on <strong>MaterialsBase</strong> database. Please click on a compound to see more detail or edit it. Please click on the Add button to add more compounds to the database.<br/><br/> Thank you !
+							</MDBCardText>
+						</MDBCardBody>
+					</MDBCard>
 				</div>
 			)}
+		</div>
+		<div className="col">
+		{viewMode === true ? (
+				<div>
+				<h4> Properties Table </h4>
+				<table className="table table-striped table-bordered table-sm mt-2" style={{display:"block",height:"400px",width:"230px", overflow:"auto"}}>
+					<thead>
+						<tr>
+						<th className="th-sm fw-bold">Properties</th>
+						<th className="th-sm fw-bold">Values</th>
+						</tr>
+					</thead>
+					<tbody>
+						{Object.keys(currentCompound.comp_properties).map((key,i)=> (
+						<tr>
+						<td className="fw-bold">{key}</td>
+						<td>{currentCompound.comp_properties[key]}</td>
+						</tr>
+						))
+						}
+					</tbody>
+				</table>
+				</div>
+		) : (
+			<div>
+
 			</div>
+		)}
+		</div>
+		</div>
 		</div>
 	);
 };

@@ -48,17 +48,17 @@ exports.findAll = (req,res) => {
 };
 
 exports.findOne = (req, res) => {
-	const comp_index = req.params.comp_index;
+	const comp_id = req.params.comp_id
 
 	Compound.findOne({
-		where: { comp_index : req.params.comp_index }
+		where: { comp_id : req.params.comp_id }
 	})
 	.then( data => {
 		res.send(data);
 	})
 	.catch( err => {
 		res.status(500).send({
-			message: err.message || "Error retrieving with compound index: " + comp_index		})
+			message: err.message || "Error retrieving with compound index: " + comp_id		})
 	});
 };
 
@@ -163,7 +163,7 @@ exports.delete = (req, res) => {
 
 
 // Delete all Compounds from the database.
-exports.deleteAll = (res) => {
+exports.deleteAll = (req, res) => {
         Compound.destroy({
                 where: {},
                 truncate: false
