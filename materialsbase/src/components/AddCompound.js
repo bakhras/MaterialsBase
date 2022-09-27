@@ -4,6 +4,8 @@ import { createCompound } from "../actions/compounds";
 import Papa from "papaparse"; /* csv extraction */
 import { Link } from "react-router-dom";
 
+var mol2;
+
 const AddCompound = () => {
 	const initialCompoundState = {
 		comp_index: "",
@@ -43,6 +45,34 @@ const AddCompound = () => {
 		})})
 	};
 
+	//Used to parse Mol2 file into Json Format 
+	const handleMolUpload = event => {
+		const { name1, value} = event.target;
+		
+		
+		var file = document.getElementById('comp_mol2').files[0]; 
+		//console.log(document.getElementById('comp_mol2').files[0]); 
+		
+		const reader = new FileReader();
+
+  reader.addEventListener("load", () => {
+    var mol2String= reader.result;
+	const myArray= mol2String.split("@<TRIPOS>");
+	const array1=myArray[2].split("\n");
+	//console.log(myArray);
+	//console.log(array1);
+    
+	//console.log (reader.result);
+  }, false);
+
+  if (file) {
+    reader.readAsText(document.getElementById('comp_mol2').files[0]);
+  }
+		
+
+	
+
+	}	
 	const saveCompound = () => {
 		const {
 			comp_index,
@@ -135,19 +165,20 @@ const AddCompound = () => {
 		  			onChange={handleInputChange}
 		  			name="comp_notation"
 		  		/>
-		  	</div>
+		  	</div> 
 
-			<div className="form-group">
+			<div className="form-group" >
 				<label htmlFor="comp_mol2">Compound mol2</label>
 		 		<input
 		  			type="file"
 		  			accept=".mol2, .txt"
 		  			className="form-control"
 		  			id="comp_mol2"
-		  			value={compound.comp_mol2}
-		  			onChange={handleFileUpload}
-		  			name="comp_index"
+		  			value={mol2}
+		  			onChange={handleMolUpload}
+		  			name="comp_mol2"
 		  		/>
+			
 		  	</div>
 			<div className="form-group">
 		  		<label htmlFor="comp_properties">Compound Properties</label>
