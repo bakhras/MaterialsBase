@@ -57,8 +57,14 @@ const AddCompound = () => {
 
   reader.addEventListener("load", () => {
     var mol2String= reader.result;
-	const myArray= mol2String.split("@<TRIPOS>");
-	const array1=myArray[2].split("\n");
+	//Splits the Mol file into sectioned array
+	const firstSplit= mol2String.split("@<TRIPOS>");
+	//Splits Each Array into sectioned parts by line
+	var splitList=[];
+	 for (let i=1;i<firstSplit.length;i++){
+		splitList.push(firstSplit[i].split("\n"));
+	 }
+	 console.log(splitList);
 	//console.log(myArray);
 	//console.log(array1);
     
@@ -69,7 +75,7 @@ const AddCompound = () => {
     reader.readAsText(document.getElementById('comp_mol2').files[0]);
   }
 		
-
+  
 	
 
 	}	
