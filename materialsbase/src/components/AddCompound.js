@@ -65,6 +65,8 @@ const AddCompound = () => {
 		splitList.push(firstSplit[i].split("\n"));
 	 }
 	 console.log(splitList);
+	 var molArray= splitList[0][2].split(" ");
+	 console.log(molArray);
 	//console.log(myArray);
 	//console.log(array1);
     
@@ -79,6 +81,56 @@ const AddCompound = () => {
 	
 
 	}	
+	function checkDataRecord(dataRecord) {
+		var obj=[];
+		obj=dataRecord;
+		var recordString="{";
+		try {
+			
+		
+		//If Statements to determine type of data record
+		if(obj[0]=="ATOM"){
+
+		}
+		else if(obj[0]=="MOLECULE"){
+			recordString+='"molecule:" [ {"'
+			for (let index = 1; index < 7; index++) {
+				if(index==1){
+					recordString+='mol_name:"'+'"'+obj[index]+'",';
+				}
+				else if(index==2){
+				 var	intsplit=obj[index].split();
+					recordString+='num_atoms:"'+'"'+intsplit[1]+'",';
+					recordString+='num_bonds:"'+'"'+intsplit[2]+'",';
+					recordString+='num_subst:"'+'"'+intsplit[3]+'",';
+					recordString+='num_feat:"'+'"'+intsplit[4]+'",';
+					recordString+='num_sets:"'+'"'+intsplit[5]+'",';
+				}
+				else if (index==3){
+					recordString+='mol_type:"'+'"'+obj[index]+'",';
+				}
+				else if (index==4){
+					recordString+='charge_type:"'+'"'+obj[index]+'",';
+				}
+				else if (index==5){
+					recordString+='status_bits:"'+'"'+obj[index]+'",';
+				}
+				else if (index==6){
+					recordString+='mol_comment"'+'"'+obj[index]+'",';
+				}
+				
+			}
+
+		}
+		else if(obj[0]=="BOND"){
+
+		}
+	}
+	catch (error) {
+			alert("An Error Has Occured.");
+	}
+		
+	}
 	const saveCompound = () => {
 		const {
 			comp_index,
