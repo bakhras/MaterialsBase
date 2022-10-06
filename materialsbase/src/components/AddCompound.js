@@ -65,12 +65,21 @@ const AddCompound = () => {
 		splitList.push(firstSplit[i].split("\n"));
 	 }
 	 console.log(splitList);
-	 var molArray= splitList[0][2].split(" ");
-	 console.log(molArray);
-	//console.log(myArray);
-	//console.log(array1);
-    
-	//console.log (reader.result);
+	 var mol2JSON= '{"mol2": {'
+	 for (let i=0;i<splitList.length;i++){
+		if(i==0){
+			mol2JSON+=checkDataRecord(splitList[i]);
+		}
+		else{
+		mol2JSON+=","+checkDataRecord(splitList[i]);
+		if(i==splitList.length-1){
+			mol2JSON+="}}"
+		}
+		}
+	 }
+	 
+	 console.log(mol2JSON);
+	
   }, false);
 
   if (file) {
@@ -84,51 +93,98 @@ const AddCompound = () => {
 	function checkDataRecord(dataRecord) {
 		var obj=[];
 		obj=dataRecord;
-		var recordString="{";
+		var recordString="";
 		try {
 			
 		
 		//If Statements to determine type of data record
 		if(obj[0]=="ATOM"){
+			recordString+='"atom":  {"'
+			for (let index = 1; index < obj.length; index++) {
+				if(obj[index]!=""){
+				if (index==1){
+				recordString+=index+'": {"';
+				}
+				else{
+					recordString+=',"'+index+'": {"';
+				}
+				var intsplit= obj[index].split(" ").filter( function(e) { return e.trim().length > 0; } );
+					recordString+='atom_id":'+'"'+intsplit[0]+'","';
+					recordString+='atom_name":'+'"'+intsplit[1]+'","';
+					recordString+='x":'+'"'+intsplit[2]+'","';
+					recordString+='y":'+'"'+intsplit[3]+'","';
+					recordString+='z":'+'"'+intsplit[4]+'","';
+					recordString+='atom_type":'+'"'+intsplit[5]+'","';
+					recordString+='subst_id":'+'"'+intsplit[6]+'","';
+					recordString+='subst_name":'+'"'+intsplit[7]+'","';
+					recordString+='charge":'+'"'+intsplit[8]+'"}';
+					
+				}
+				if (index==obj.length-1){
+					recordString+="}";
+				}
+				
+			}
 
 		}
 		else if(obj[0]=="MOLECULE"){
-			recordString+='"molecule:" [ {"'
+			recordString+='"molecule":  {"'
 			for (let index = 1; index < 7; index++) {
 				if(index==1){
-					recordString+='mol_name:"'+'"'+obj[index]+'",';
+					recordString+='mol_name":'+'"'+obj[index]+'","';
 				}
 				else if(index==2){
-				 var	intsplit=obj[index].split();
-					recordString+='num_atoms:"'+'"'+intsplit[1]+'",';
-					recordString+='num_bonds:"'+'"'+intsplit[2]+'",';
-					recordString+='num_subst:"'+'"'+intsplit[3]+'",';
-					recordString+='num_feat:"'+'"'+intsplit[4]+'",';
-					recordString+='num_sets:"'+'"'+intsplit[5]+'",';
+				 var	intsplit=obj[index].split(" ");
+					recordString+='num_atoms":'+'"'+intsplit[1]+'","';
+					recordString+='num_bonds":'+'"'+intsplit[2]+'","';
+					recordString+='num_subst":'+'"'+intsplit[3]+'","';
+					recordString+='num_feat":'+'"'+intsplit[4]+'","';
+					recordString+='num_sets":'+'"'+intsplit[5]+'","';
 				}
 				else if (index==3){
-					recordString+='mol_type:"'+'"'+obj[index]+'",';
+					recordString+='mol_type":'+'"'+obj[index]+'","';
 				}
 				else if (index==4){
-					recordString+='charge_type:"'+'"'+obj[index]+'",';
+					recordString+='charge_type":'+'"'+obj[index]+'","';
 				}
 				else if (index==5){
-					recordString+='status_bits:"'+'"'+obj[index]+'",';
+					recordString+='status_bits":'+'"'+obj[index]+'","';
 				}
 				else if (index==6){
-					recordString+='mol_comment"'+'"'+obj[index]+'",';
+					recordString+='mol_comment":'+'"'+obj[index]+'"}';
 				}
 				
 			}
 
 		}
 		else if(obj[0]=="BOND"){
-
+			recordString+='"bond":  {"'
+			for (let index = 1; index < obj.length; index++) {
+				if(obj[index]!=""){
+				if (index==1){
+				recordString+=index+'": {"';
+				}
+				else{
+					recordString+=',"'+index+'": {"';
+				}
+				var intsplit= obj[index].split(" ").filter( function(e) { return e.trim().length > 0; } );
+					recordString+='bond_id":'+'"'+intsplit[0]+'","';
+					recordString+='origin_atom_id":'+'"'+intsplit[1]+'","';
+					recordString+='target_atom_id":'+'"'+intsplit[2]+'","';
+					recordString+='bond_type":'+'"'+intsplit[3]+'"}';
+					
+					
+				}
+				if (index==obj.length-1){
+					recordString+="}";
+				}	
+			}
 		}
 	}
 	catch (error) {
 			alert("An Error Has Occured.");
 	}
+	return recordString;
 		
 	}
 	const saveCompound = () => {
