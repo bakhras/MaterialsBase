@@ -98,11 +98,13 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // parse req of type json
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // serve static images
 //app.use(express.static(__dirname, {dotfiles: 'allow' } ));
 app.use(express.static(__dirname + '/static'));
+
 
 // simple route
 app.get("/", (req,res) => {

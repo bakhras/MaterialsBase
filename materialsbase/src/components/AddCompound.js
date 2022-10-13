@@ -33,16 +33,12 @@ const AddCompound = () => {
 	const handleCsvUpload = event => {
 		const { name, file} = event.target;
 		Papa.parse(document.getElementById('comp_properties').files[0], {
-			header: true,
+			header: false,
 			dynamicTyping: true,
 			complete: function(results) {
-				console.log(results.data);
-				console.log(compound.comp_properties);
-				setCompound({...compound, [name]: results.data});
+				setCompound({...compound, [name]: results.data[0]});
 			}
-		})
-		
-		
+		});
 	};
 
 	//Used to parse Mol2 file into Json Format
@@ -78,7 +74,7 @@ const AddCompound = () => {
 				}
 			}
 			console.log(mol2JSONString);
-			setCompound({...compound, [name]: JSON.parse(mol2JSONString)});
+			setCompound({...compound, [name]: mol2JSONString});
 		};
 	};
 
@@ -193,16 +189,16 @@ const AddCompound = () => {
 			comp_components,
 			comp_properties
 		 } = compound;
-
 		dispatch(createCompound(
 			comp_index,
 			comp_material,
 			comp_notation,
-			comp_mol2,
+			JSON.stringify(comp_mol2),
 			comp_components,
-			comp_properties
+			JSON.stringify(comp_properties),
 		))
 			.then(data => {
+				console.log(data);
 				setCompound({
 					comp_index: data.comp_index,
 					comp_material: data.comp_material,
@@ -213,7 +209,7 @@ const AddCompound = () => {
         			});
         			setSubmitted(true);
 
-        			console.log(data);
+
       			})
 			.catch(e => {
 				console.log(e);
@@ -285,11 +281,10 @@ const AddCompound = () => {
 		  			accept=".mol2, .txt"
 		  			className="form-control"
 		  			id="comp_mol2"
-		  			value={compound.comp_mol2}
+		  			//value={compound.comp_mol2}
 		  			onChange={handleMolUpload}
 		  			name="comp_mol2"
 		  		/>
-
 		  	</div>
 			<div className="form-group">
 		  		<label htmlFor="comp_properties">Compound Properties</label>
@@ -298,7 +293,7 @@ const AddCompound = () => {
 					accept=".csv, .txt"
 		  			className="form-control"
 		  			id="comp_properties"
-		  			value={compound.comp_properties}
+		  			//value={compound.comp_properties}
 		  			onChange={handleCsvUpload}
 		  			name="comp_properties"
 		  		/>
