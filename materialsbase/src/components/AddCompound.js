@@ -32,14 +32,17 @@ const AddCompound = () => {
 
 	const handleCsvUpload = event => {
 		const { name, file} = event.target;
-		setCompound({...compound, [name]: Papa.parse(document.getElementById('comp_properties').files[0], {
+		Papa.parse(document.getElementById('comp_properties').files[0], {
 			header: true,
 			dynamicTyping: true,
 			complete: function(results) {
-				console.log(results);
+				console.log(results.data);
 				console.log(compound.comp_properties);
+				setCompound({...compound, [name]: results.data});
 			}
-		})})
+		})
+		
+		
 	};
 
 	//Used to parse Mol2 file into Json Format
@@ -74,7 +77,7 @@ const AddCompound = () => {
 					}
 				}
 			}
-			//console.log(mol2JSONString);
+			console.log(mol2JSONString);
 			setCompound({...compound, [name]: JSON.parse(mol2JSONString)});
 		};
 	};
