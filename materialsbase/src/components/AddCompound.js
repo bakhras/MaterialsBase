@@ -4,35 +4,31 @@ import { createCompound } from "../actions/compounds";
 import Papa from "papaparse"; /* csv extraction */
 import { Link } from "react-router-dom";
 
-
-
 const AddCompound = () => {
 	const initialCompoundState = {
 		comp_index: "",
 		comp_material: "",
 		comp_notation: "",
-		comp_mol2: null,
+		comp_mol2: "",
 		comp_components: "",
-		comp_properties: null,
+		comp_properties: "",
 	};
 
 	const [compound, setCompound] = useState(initialCompoundState);
 	const [submitted, setSubmitted] = useState(false);
 
-
-
 	const dispatch = useDispatch();
 	dispatch(createCompound);
+
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCompound({ ...compound, [name]: value });
-
 	};
 
-	const handleFileUpload = event => {
-		const { name, file } = event.target;
-		setCompound({ ...compound, [name]: file });
-	};
+	//const handleFileUpload = event => {
+	//	const { name, file } = event.target;
+	//	setCompound({ ...compound, [name]: file });
+	//};
 
 	const handleCsvUpload = event => {
 		const { name, file} = event.target;
@@ -46,77 +42,60 @@ const AddCompound = () => {
 		})})
 	};
 
-	//Used to parse Mol2 file into Json Format 
+	//Used to parse Mol2 file into Json Format
 	const handleMolUpload = event => {
-		const { name1, value} = event.target;
-		
-		
-		var file = document.getElementById('comp_mol2').files[0]; 
-		//console.log(document.getElementById('comp_mol2').files[0]); 
-		
+		const { name, file } = event.target;
 		const reader = new FileReader();
-
-  		reader.addEventListener("load", () => {
-			var currentTime=Date.now();
-    		var mol2String= reader.result;
-
+		reader.readAsText(document.getElementById('comp_mol2').files[0]);
+		reader.onload = () => {
+			console.log(reader.result);
 			//Splits the Mol file into sectioned array
-			const firstSplit= mol2String.split("@<TRIPOS>").filter( function(e) { return e.trim().length > 0; });
+			const firstSplit= (reader.result).split("@<TRIPOS>").filter( function(e) { return e.trim().length > 0; });
 			console.log(firstSplit);
 			//Splits Each Array into sectioned parts by line
 			var splitList=[];
-			 for (let i=0;i<firstSplit.length;i++){
-			splitList.push(firstSplit[i].split("\n"));
-			 }
+			for (let i=0;i<firstSplit.length;i++){
+				splitList.push(firstSplit[i].split("\n"));
+			}
 
-			 //console.log(splitList);
+			//console.log(splitList);
 
-			 var mol2JSONString= '{"mol2": {'
+			 var mol2JSONString = '{"mol2": {'
 			 for (let i=0;i<splitList.length;i++){
-				if(i==0){
+				if(i===0){
 					mol2JSONString+=checkDataRecord(splitList[i]);
 				}
 
 				else{
 					mol2JSONString+=","+checkDataRecord(splitList[i]);
-					if(i==splitList.length-1){
+					if(i===splitList.length-1){
 						mol2JSONString+="}}"
-						console.log("RunTime:" +(Date.now()-currentTime).toString());
+						//console.log("RunTime:" +(Date.now()-currentTime).toString());
 					}
 				}
-	 		}
-	 console.log(mol2JSONString);
-		/// var JSONMol2= JSON.parse(mol2JSONString);
-		// const { name, value } = event.target;
-		 //setCompound({ ...compound, [name]: JSONMol2 });
-	
-  	}, false);
+			}
+			//console.log(mol2JSONString);
+			setCompound({...compound, [name]: JSON.parse(mol2JSONString)});
+		};
+	};
 
-  	if (file) {
-    reader.readAsText(document.getElementById('comp_mol2').files[0]);
-  	}
-		
-	}	
 
-	function checkDataRecord(dataRecord) {
-		var obj=[];
-		obj=dataRecord;
+	//Checks the Data Record Type and returns the appropriate JSON string
+	const checkDataRecord = (dataRecord) => {
 		var recordString="";
-		try {
-			
-		
+
 		//If Statements to determine type of data record
-		if(obj[0]=="ATOM"){
+		if(dataRecord[0]==="ATOM"){
 			recordString+='"atom":  {"'
-			for (let index = 1; index < obj.length; index++) {
-				if(obj[index]!=""){
-				if (index==1){
-				recordString+=index+'": {"';
+			for (let i = 1; i < dataRecord.length; i++) {
+				if(dataRecord[i]!==""){
+				if (i===1){
+				recordString+=i+'": {"';
 				}
 				else{
-					recordString+=',"'+index+'": {"';
+					recordString+=',"'+i+'": {"';
 				}
-				var intsplit= obj[index].split(" ").filter( function(e) { return e.trim().length > 0; } );
+				var intsplit= dataRecord[i].split(" ").filter( function(e) { return e.trim().length > 0; } );
 					recordString+='atom_id":'+'"'+intsplit[0]+'","';
 					recordString+='atom_name":'+'"'+intsplit[1]+'","';
 					recordString+='x":'+'"'+intsplit[2]+'","';
@@ -126,24 +105,24 @@ const AddCompound = () => {
 					recordString+='subst_id":'+'"'+intsplit[6]+'","';
 					recordString+='subst_name":'+'"'+intsplit[7]+'","';
 					recordString+='charge":'+'"'+intsplit[8]+'"}';
-					
+
 				}
-				if (index==obj.length-1){
+				if (i===dataRecord.length-1){
 					recordString+="}";
 				}
-				
+
 			}
 
 		}
-		else if(obj[0]=="MOLECULE"){
+		else if(dataRecord[0]==="MOLECULE"){
 			recordString+='"molecule":  {"'
-			for (let index = 1; index < 7; index++) {
-				if(index==1){
-					recordString+='mol_name":'+'"'+obj[index]+'","';
+			for (let i = 1; i < 7; i++) {
+				if(i===1){
+					recordString+='mol_name":'+'"'+dataRecord[i]+'","';
 				}
 
-				else if(index==2){
-					var intsplit=obj[index].split(" ");
+				else if(i===2){
+					intsplit=dataRecord[i].split(" ");
 					recordString+='num_atoms":'+'"'+intsplit[1]+'","';
 					recordString+='num_bonds":'+'"'+intsplit[2]+'","';
 					recordString+='num_subst":'+'"'+intsplit[3]+'","';
@@ -151,61 +130,57 @@ const AddCompound = () => {
 					recordString+='num_sets":'+'"'+intsplit[5]+'","';
 				}
 
-				else if (index==3){
-					recordString+='mol_type":'+'"'+obj[index]+'","';
+				else if (i===3){
+					recordString+='mol_type":'+'"'+dataRecord[i]+'","';
 				}
 
-				else if (index==4){
-					recordString+='charge_type":'+'"'+obj[index]+'","';
+				else if (i===4){
+					recordString+='charge_type":'+'"'+dataRecord[i]+'","';
 				}
 
-				else if (index==5){
-					recordString+='status_bits":'+'"'+obj[index]+'","';
+				else if (i===5){
+					recordString+='status_bits":'+'"'+dataRecord[i]+'","';
 				}
 
-				else if (index==6){
-					recordString+='mol_comment":'+'"'+obj[index]+'"}';
+				else if (i===6){
+					recordString+='mol_comment":'+'"'+dataRecord[i]+'"}';
 				}
-				
+
 			}
 
 		}
-		else if(obj[0]=="BOND"){
+		else if(dataRecord[0]==="BOND"){
 			recordString+='"bond":  {"'
-			for (let index = 1; index < obj.length; index++) {
-				if(obj[index]!=""){
-					if (index==1){
-						recordString+=index+'": {"';
+			for (let i = 1; i < dataRecord.length; i++) {
+				if(dataRecord[i]!==""){
+					if (i===1){
+						recordString+=i+'": {"';
 					}
 
 					else{
-						recordString+=',"'+index+'": {"';
+						recordString+=',"'+i+'": {"';
 					}
 
-					var intsplit= obj[index].split(" ").filter( function(e) { return e.trim().length > 0; } );
+					intsplit= dataRecord[i].split(" ").filter( function(e) { return e.trim().length > 0; } );
 					recordString+='bond_id":'+'"'+intsplit[0]+'","';
 					recordString+='origin_atom_id":'+'"'+intsplit[1]+'","';
 					recordString+='target_atom_id":'+'"'+intsplit[2]+'","';
 					recordString+='bond_type":'+'"'+intsplit[3]+'"}';
-					
-					
+
+
 				}
 
-				if (index==obj.length-1){
+				if (i===dataRecord.length-1){
 					recordString+="}";
-				}	
+				}
 			}
 		}
 		else {
 			recordString='';
 		}
+		return recordString;
 	}
-	catch (error) {
-			
-	}
-	return recordString;
-		
-	}
+
 	const saveCompound = () => {
 		const {
 			comp_index,
@@ -298,7 +273,7 @@ const AddCompound = () => {
 		  			onChange={handleInputChange}
 		  			name="comp_notation"
 		  		/>
-		  	</div> 
+		  	</div>
 
 			<div className="form-group" >
 				<label htmlFor="comp_mol2">Compound mol2</label>
@@ -311,7 +286,7 @@ const AddCompound = () => {
 		  			onChange={handleMolUpload}
 		  			name="comp_mol2"
 		  		/>
-			
+
 		  	</div>
 			<div className="form-group">
 		  		<label htmlFor="comp_properties">Compound Properties</label>
