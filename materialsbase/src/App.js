@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
-import { MDBContainer} from "mdbreact";
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem,  MDBContainer} from "mdbreact";
 import './App.css';
 import Compound from "./components/Compound";
 import CompoundList from "./components/CompoundList";

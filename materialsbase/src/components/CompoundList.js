@@ -211,13 +211,12 @@ const CompoundsList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys(currentCompound.comp_properties).map((key,i)=> (
-						<tr>
-						<td className="fw-bold">{key}</td>
-						<td>{currentCompound.comp_properties[key]}</td>
-						</tr>
-						))
-						}
+						{Object.keys(JSON.parse(currentCompound.comp_properties)).map((key,i)=> (
+							<tr key={i}>
+								<td className="fw-bold">{key}</td>
+								<td>{JSON.parse(currentCompound.comp_properties)[key]}</td>
+							</tr>
+						))}
 					</tbody>
 				</table>
 				</div>
