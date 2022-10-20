@@ -68,6 +68,23 @@ const CompoundsList = () => {
 		link.click();
 		link.parentNode.removeChild(link);
 	};
+//Method to change the JSONB to a MOL2 FIle
+	const JSONtoMOL2 = () => {
+		var o= [];
+		var obj= JSON.parse(currentCompound.comp_mol2);
+		var obj2=JSON.stringify(obj);
+		var obj3=JSON.parse(obj2);
+		console.log(obj);
+		console.log(obj3.mol2);
+		o=obj3;
+		console.log(o);
+		
+		
+		
+		
+	};
+
+
 
 	const downloadCSV = () => {
 		const element = currentCompound.comp_properties;
@@ -167,7 +184,7 @@ const CompoundsList = () => {
 					<button
 						type="button"
 						className="btn btn-outline-dark mb-2"
-						onClick={downloadMol2}
+						onClick={JSONtoMOL2}
 					>Download mol2 (.mol2)</button>
 				</div>
 				<div className="input-group-append">
