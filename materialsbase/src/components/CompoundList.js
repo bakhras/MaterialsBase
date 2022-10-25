@@ -72,8 +72,6 @@ const CompoundsList = () => {
 	const JSONtoMOL2 = () => {
 		var o= [];
 		var obj= JSON.parse(currentCompound.comp_mol2);
-		var obj2=JSON.stringify(obj);
-		var obj3=JSON.parse(obj2);
 		console.log(obj);
 		console.log(obj3.mol2);
 		o=obj3;
@@ -184,6 +182,7 @@ const CompoundsList = () => {
 					<button
 						type="button"
 						className="btn btn-outline-dark mb-2"
+						//For testing purposes changed method from downloadMol2 to JSONtoMOl2
 						onClick={JSONtoMOL2}
 					>Download mol2 (.mol2)</button>
 				</div>
