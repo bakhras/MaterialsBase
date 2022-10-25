@@ -71,8 +71,69 @@ const CompoundsList = () => {
 	//Method to change the JSONB to a MOL2 FIle
 	const JSONtoMOL2 = () => {
 		const obj = JSON.parse(currentCompound.comp_mol2);
-		// actual code in here
+		console.log(obj.mol2.molecule);
+
+		//Mapping object values to key value pairs
+		const moleculeMap= new Map(Object.entries(obj.mol2.molecule));
+		const atomMap=new Map(Object.entries(obj.mol2.atom));
+		const bondMap= new Map(Object.entries(obj.mol2.bond));
+
+		//Concatenating molecule information into string
+		var mol2FileString= "@<TRIPOS>MOLECULE\n";
+		mol2FileString+= moleculeMap.get("mol_name")+"\n ";
+		mol2FileString+= moleculeMap.get("num_atoms")+" "+
+		moleculeMap.get("num_bonds")+" "+
+		moleculeMap.get("num_subst")+" "+
+		moleculeMap.get("num_feat")+" "+
+		moleculeMap.get("num_sets")+"\n";
+		mol2FileString+=moleculeMap.get("mol_type")+"\n";
+		mol2FileString+=moleculeMap.get("charge_type")+"\n";
+		if(moleculeMap.get("status_bits")!==""){
+			mol2FileString+=moleculeMap.get("status_bits")+"\n";
+		}
+		mol2FileString+=moleculeMap.get("mol_comment")+"\n";
+
+		//Concatenating atom information into string
+		mol2FileString+= "@<TRIPOS>ATOM\n";
+		atomMap.forEach((value,key)=>{
+	    const atomEntryMap=new Map(Object.entries(value));
+		if(atomEntryMap.get("atom_id").length===1){
+			mol2FileString+="      ";
+		}
+		else if(atomEntryMap.get("atom_id").length===2){
+			mol2FileString+="     ";
+		}
+		else if(atomEntryMap.get("atom_id").length===3){
+			mol2FileString+="    ";
+		}
+		else if(atomEntryMap.get("atom_id").length===3){
+			mol2FileString+="   ";
+		}
+		mol2FileString+=
+		atomEntryMap.get("atom_id")+" "+
+		atomEntryMap.get("atom_name")+"          "+
+		atomEntryMap.get("x")+"    "+
+		atomEntryMap.get("y")+"    "+
+		atomEntryMap.get("z")+" ";
+		if(atomEntryMap.get("atom_type").length>1){
+			mol2FileString+=atomEntryMap.get("atom_type")+"    ";
+		}
+		else{
+			mol2FileString+=atomEntryMap.get("atom_type")+"       ";
+		}
+		mol2FileString+=atomEntryMap.get("subst_id")+"  "+
+		atomEntryMap.get("subst_name")+"       "+
+		atomEntryMap.get("charge")+"\n";
+		});
+		console.log(mol2FileString);
+		
+
+
+
+		
+		
 	};
+	
 
 	const downloadCSV = () => {
 		const element = currentCompound.comp_properties;
@@ -172,6 +233,7 @@ const CompoundsList = () => {
 					<button
 						type="button"
 						className="btn btn-outline-dark mb-2"
+						//Changed to JSONtoMOL2 for dev purposes will change back to download MOL2 when ready for testing
 						onClick={ ()=> JSONtoMOL2() }
 					>Download mol2 (.mol2)</button>
 				</div>
