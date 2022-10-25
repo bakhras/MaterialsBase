@@ -193,9 +193,9 @@ const AddCompound = () => {
 			comp_index,
 			comp_material,
 			comp_notation,
-			JSON.stringify(comp_mol2),
+			comp_mol2,
 			comp_components,
-			JSON.stringify(comp_properties),
+			comp_properties,
 		))
 			.then(data => {
 				console.log(data);
