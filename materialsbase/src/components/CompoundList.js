@@ -53,7 +53,7 @@ const CompoundsList = () => {
 	};
 
 	const downloadMol2 = () => {
-		const element = currentCompound.comp_mol2;
+		const element = JSONtoMOL2();
 		const url = window.URL.createObjectURL(
 			new Blob([element])
 		);
@@ -111,12 +111,49 @@ const CompoundsList = () => {
 		}
 		mol2FileString+=
 		atomEntryMap.get("atom_id")+" "+
-		atomEntryMap.get("atom_name")+"          "+
-		atomEntryMap.get("x")+"    "+
-		atomEntryMap.get("y")+"    "+
-		atomEntryMap.get("z")+" ";
-		if(atomEntryMap.get("atom_type").length>1){
+		atomEntryMap.get("atom_name");
+		if(atomEntryMap.get("x").length===7){
+			mol2FileString+="         "+atomEntryMap.get("x");
+		}
+		else if(atomEntryMap.get("x").length===8){
+			mol2FileString+="        "+atomEntryMap.get("x");
+		}
+		else if(atomEntryMap.get("x").length===9){
+			mol2FileString+="       "+atomEntryMap.get("x");
+		}
+		else{
+			mol2FileString+="          "+atomEntryMap.get("x");
+		}
+		if(atomEntryMap.get("y").length===7){
+			mol2FileString+="   "+atomEntryMap.get("y");
+		}
+		else if(atomEntryMap.get("y").length===8){
+			mol2FileString+="  "+atomEntryMap.get("y");
+		}
+		else if(atomEntryMap.get("y").length===9){
+			mol2FileString+=" "+atomEntryMap.get("y");
+		}
+		else{
+			mol2FileString+="    "+atomEntryMap.get("y");
+		}
+		if(atomEntryMap.get("z").length===7){
+			mol2FileString+="   "+atomEntryMap.get("z")+" ";
+		}
+		else if(atomEntryMap.get("z").length===8){
+			mol2FileString+="  "+atomEntryMap.get("z")+" ";
+		}
+		else if(atomEntryMap.get("z").length===9){
+			mol2FileString+="  "+atomEntryMap.get("z")+" ";
+		}
+		else{
+			mol2FileString+="    "+atomEntryMap.get("z")+" ";
+		}
+		
+		if(atomEntryMap.get("atom_type").length===4){
 			mol2FileString+=atomEntryMap.get("atom_type")+"    ";
+		}
+		else if(atomEntryMap.get("atom_type").length===3){
+			mol2FileString+=atomEntryMap.get("atom_type")+"     ";
 		}
 		else{
 			mol2FileString+=atomEntryMap.get("atom_type")+"       ";
@@ -125,8 +162,52 @@ const CompoundsList = () => {
 		atomEntryMap.get("subst_name")+"       "+
 		atomEntryMap.get("charge")+"\n";
 		});
+
+
+		//Concatenating bond information into string
+		mol2FileString+= "@<TRIPOS>BOND\n";
+		bondMap.forEach((value,key)=>{
+	    const bondEntryMap=new Map(Object.entries(value));
 		console.log(mol2FileString);
+			if(bondEntryMap.get("bond_id").length===1){
+				mol2FileString+="     "+bondEntryMap.get("bond_id");
+			}
+			else if(bondEntryMap.get("bond_id").length===2){
+				mol2FileString+="    "+bondEntryMap.get("bond_id");
+			}
+			else{
+				mol2FileString+="   "+bondEntryMap.get("bond_id");
+			}
+
+			if(bondEntryMap.get("origin_atom_id").length===1){
+				mol2FileString+="     "+bondEntryMap.get("origin_atom_id");
+			}
+			else if(bondEntryMap.get("origin_atom_id").length===2){
+				mol2FileString+="    "+bondEntryMap.get("origin_atom_id");
+			}
+			else{
+				mol2FileString+="   "+bondEntryMap.get("origin_atom_id");
+			}
+
+			if(bondEntryMap.get("target_atom_id").length===1){
+				mol2FileString+="     "+bondEntryMap.get("target_atom_id");
+			}
+			else if(bondEntryMap.get("target_atom_id").length===2){
+				mol2FileString+="    "+bondEntryMap.get("target_atom_id");
+			}
+			else{
+				mol2FileString+="   "+bondEntryMap.get("target_atom_id");
+			}
+
+			if(bondEntryMap.get("bond_type").length===1){
+				mol2FileString+="    "+bondEntryMap.get("bond_type")+"\n";
+			}
+			else {
+				mol2FileString+="   "+bondEntryMap.get("bond_type")+"\n";
+			}
+		});
 		
+		return mol2FileString;
 
 
 
@@ -233,8 +314,8 @@ const CompoundsList = () => {
 					<button
 						type="button"
 						className="btn btn-outline-dark mb-2"
-						//Changed to JSONtoMOL2 for dev purposes will change back to download MOL2 when ready for testing
-						onClick={ ()=> JSONtoMOL2() }
+						
+						onClick={ ()=> downloadMol2() }
 					>Download mol2 (.mol2)</button>
 				</div>
 				<div className="input-group-append">
