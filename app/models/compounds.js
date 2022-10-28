@@ -1,37 +1,33 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   const Compound = sequelize.define('compounds', {
-    comp_id: {
+    comp_id: { // a unique identifier for the compound randomly generated
       type: DataTypes.STRING(10),
       allowNull: false,
       primaryKey: true
     },
-    comp_index: {
+    comp_index: { // a unique identifier for cross-referencing with other tables
       type: DataTypes.STRING(64),
       allowNull: false,
       unique: "table_uq_1"
     },
-    comp_material: {
+    comp_material: { //the human-readable name of the compound
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    comp_notation: {
-      // TO-DO: write a datatype to accept SMILES
-      //type: DataTypes.mol,
-      type: DataTypes.TEXT,
+    comp_notation: { //the chemical formula of the compound in SMILES notation
+      type: DataTypes.mol,
       allowNull: false
     },
-    comp_mol2: {
-      // TO-DO: write a json parser for mol2 files
-      type: DataTypes.JSONB,
-      //type: DataTypes.TEXT,
-      allowNull: true
-    },
-    comp_components: {
+    comp_mol2: { //the 3D structure of the compound in mol2 format
       type: DataTypes.JSONB,
       allowNull: true
     },
-    comp_properties: {
+    comp_components: { //the components of the compound in JSON format based on substructure search
+      type: DataTypes.JSONB,
+      allowNull: true
+    },
+    comp_properties: { //the properties of the compound
       type: DataTypes.JSONB,
       allowNull: true
     }
