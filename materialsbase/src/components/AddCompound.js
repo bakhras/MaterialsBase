@@ -33,10 +33,10 @@ const AddCompound = () => {
 	const handleCsvUpload = event => {
 		const { name, file} = event.target;
 		Papa.parse(document.getElementById('comp_properties').files[0], {
-			header: false,
+			header: true,
 			dynamicTyping: true,
 			complete: function(results) {
-				setCompound({...compound, [name]: results.data[0]});
+				setCompound({...compound, [name]: results.data[0] });
 			}
 		});
 	};
@@ -193,9 +193,9 @@ const AddCompound = () => {
 			comp_index,
 			comp_material,
 			comp_notation,
-			JSON.stringify(comp_mol2),
+			comp_mol2,
 			comp_components,
-			JSON.stringify(comp_properties),
+			comp_properties,
 		))
 			.then(data => {
 				console.log(data);

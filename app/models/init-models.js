@@ -6,7 +6,6 @@ function initModels(sequelize) {
   var compounds = _compounds(sequelize, DataTypes);
   var users = _users(sequelize, DataTypes);
 
-
   return {
     compounds,
     users,
