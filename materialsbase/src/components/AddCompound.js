@@ -33,10 +33,11 @@ const AddCompound = () => {
 	const handleCsvUpload = event => {
 		const { name, file} = event.target;
 		Papa.parse(document.getElementById('comp_properties').files[0], {
-			header: false,
+			header: true,
 			dynamicTyping: true,
 			complete: function(results) {
-				setCompound({...compound, [name]: results.data[0]});
+				// for now, the first two elements of the array
+				setCompound({...compound, [name]: (results.data).slice(0,1)});
 			}
 		});
 	};
