@@ -36,8 +36,7 @@ const AddCompound = () => {
 			header: true,
 			dynamicTyping: true,
 			complete: function(results) {
-				// for now, the first two elements of the array
-				setCompound({...compound, [name]: (results.data).slice(0,1)});
+				setCompound({...compound, [name]: results.data[0] });
 			}
 		});
 	};

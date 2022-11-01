@@ -225,10 +225,11 @@ const CompoundsList = () => {
 			new Blob([element])
 		);
 		const link = document.createElement('a');
+		const filename = currentCompound.comp_material + ".csv";
 		link.href = url;
 		link.setAttribute(
 			'download',
-			'file.csv'
+			filename
 		);
 
 		document.body.appendChild(link);
@@ -362,10 +363,10 @@ const CompoundsList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys(JSON.parse(currentCompound.comp_properties)).map((key,i)=> (
+						{Object.keys( JSON.parse(JSON.stringify(currentCompound.comp_properties))).map((key,i)=> (
 							<tr key={i}>
 								<td className="fw-bold">{key}</td>
-								<td>{JSON.parse(currentCompound.comp_properties)[key]}</td>
+								<td>{ JSON.parse(JSON.stringify(currentCompound.comp_properties))[key] }</td>
 							</tr>
 						))}
 					</tbody>
