@@ -73,7 +73,7 @@ const CompoundsList = () => {
 	const JSONtoMOL2 = () => {
 		const obj = JSON.parse(currentCompound.comp_mol2);
 
-		console.log(obj.mol2.molecule);
+		console.log(obj.mol2.atom);
 
 		//Mapping object values to key value pairs
 		const moleculeMap= new Map(Object.entries(obj.mol2.molecule));
@@ -101,122 +101,87 @@ const CompoundsList = () => {
 
 		//Concatenating atom information into string
 		mol2FileString+= "@<TRIPOS>ATOM\n";
+		const numPaddingATOM= formatSpacing(atomMap);
 
 		atomMap.forEach((value,key)=>{
 			const atomEntryMap=new Map(Object.entries(value));
 
-			if(atomEntryMap.get("atom_id").length===1){
-				mol2FileString+="      ";
-			}
-			else if(atomEntryMap.get("atom_id").length===2){
-				mol2FileString+="     ";
-			}
-			else if(atomEntryMap.get("atom_id").length===3){
-				mol2FileString+="    ";
-			}
+			mol2FileString+=atomEntryMap.get("atom_id").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("atom_name").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("x").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("y").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("z").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("atom_type").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("subst_id").padStart(numPaddingATOM," ")+
+				atomEntryMap.get("subst_id").padStart(numPaddingATOM," ")+"\n";
 
-			mol2FileString+=
-				atomEntryMap.get("atom_id")+" "+
-				atomEntryMap.get("atom_name");
-
-			if(atomEntryMap.get("x").length===7){
-				mol2FileString+="         "+atomEntryMap.get("x");
-			}
-			else if(atomEntryMap.get("x").length===8){
-				mol2FileString+="        "+atomEntryMap.get("x");
-			}
-			else if(atomEntryMap.get("x").length===9){
-				mol2FileString+="       "+atomEntryMap.get("x");
-			}
-			else{
-				mol2FileString+="          "+atomEntryMap.get("x");
-			}
-
-			if(atomEntryMap.get("y").length===7){
-				mol2FileString+="   "+atomEntryMap.get("y");
-			}
-			else if(atomEntryMap.get("y").length===8){
-				mol2FileString+="  "+atomEntryMap.get("y");
-			}
-			else if(atomEntryMap.get("y").length===9){
-				mol2FileString+=" "+atomEntryMap.get("y");
-			}
-			else{
-				mol2FileString+="    "+atomEntryMap.get("y");
-			}
-			if(atomEntryMap.get("z").length===7){
-				mol2FileString+="   "+atomEntryMap.get("z")+" ";
-			}
-			else if(atomEntryMap.get("z").length===8){
-				mol2FileString+="  "+atomEntryMap.get("z")+" ";
-			}
-			else if(atomEntryMap.get("z").length===9){
-				mol2FileString+="  "+atomEntryMap.get("z")+" ";
-			}
-			else{
-				mol2FileString+="    "+atomEntryMap.get("z")+" ";
-			}
-
-			if(atomEntryMap.get("atom_type").length===4){
-				mol2FileString+=atomEntryMap.get("atom_type")+"    ";
-			}
-			else if(atomEntryMap.get("atom_type").length===3){
-				mol2FileString+=atomEntryMap.get("atom_type")+"     ";
-			}
-			else{
-				mol2FileString+=atomEntryMap.get("atom_type")+"       ";
-			}
-			mol2FileString+=atomEntryMap.get("subst_id")+"  "+
-			atomEntryMap.get("subst_name")+"       "+
-			atomEntryMap.get("charge")+"\n";
 			});
 
 
 		//Concatenating bond information into string
 		mol2FileString+= "@<TRIPOS>BOND\n";
+		const numPaddingBOND= formatSpacing(bondMap);
 		bondMap.forEach((value,key)=>{
 			const bondEntryMap=new Map(Object.entries(value));
-			console.log(mol2FileString);
-			if(bondEntryMap.get("bond_id").length===1){
-				mol2FileString+="     "+bondEntryMap.get("bond_id");
-			}
-			else if(bondEntryMap.get("bond_id").length===2){
-				mol2FileString+="    "+bondEntryMap.get("bond_id");
-			}
-			else{
-				mol2FileString+="   "+bondEntryMap.get("bond_id");
-			}
+			mol2FileString+=bondEntryMap.get("bond_id").padStart(numPaddingBOND," ")+
+				bondEntryMap.get("bond_id").padStart(numPaddingBOND," ")+
+				bondEntryMap.get("origin_atom_id").padStart(numPaddingBOND," ")+
+				bondEntryMap.get("target_atom_id").padStart(numPaddingBOND," ")+
+				bondEntryMap.get("bond_type").padStart(numPaddingBOND," ")+"\n";
+			//console.log(mol2FileString);
+			// if(bondEntryMap.get("bond_id").length===1){
+			// 	mol2FileString+="     "+bondEntryMap.get("bond_id");
+			// }
+			// else if(bondEntryMap.get("bond_id").length===2){
+			// 	mol2FileString+="    "+bondEntryMap.get("bond_id");
+			// }
+			// else{
+			// 	mol2FileString+="   "+bondEntryMap.get("bond_id");
+			// }
 
-			if(bondEntryMap.get("origin_atom_id").length===1){
-				mol2FileString+="     "+bondEntryMap.get("origin_atom_id");
-			}
-			else if(bondEntryMap.get("origin_atom_id").length===2){
-				mol2FileString+="    "+bondEntryMap.get("origin_atom_id");
-			}
-			else{
-				mol2FileString+="   "+bondEntryMap.get("origin_atom_id");
-			}
+			// if(bondEntryMap.get("origin_atom_id").length===1){
+			// 	mol2FileString+="     "+bondEntryMap.get("origin_atom_id");
+			// }
+			// else if(bondEntryMap.get("origin_atom_id").length===2){
+			// 	mol2FileString+="    "+bondEntryMap.get("origin_atom_id");
+			// }
+			// else{
+			// 	mol2FileString+="   "+bondEntryMap.get("origin_atom_id");
+			// }
 
-			if(bondEntryMap.get("target_atom_id").length===1){
-				mol2FileString+="     "+bondEntryMap.get("target_atom_id");
-			}
-			else if(bondEntryMap.get("target_atom_id").length===2){
-				mol2FileString+="    "+bondEntryMap.get("target_atom_id");
-			}
-			else{
-				mol2FileString+="   "+bondEntryMap.get("target_atom_id");
-			}
+			// if(bondEntryMap.get("target_atom_id").length===1){
+			// 	mol2FileString+="     "+bondEntryMap.get("target_atom_id");
+			// }
+			// else if(bondEntryMap.get("target_atom_id").length===2){
+			// 	mol2FileString+="    "+bondEntryMap.get("target_atom_id");
+			// }
+			// else{
+			// 	mol2FileString+="   "+bondEntryMap.get("target_atom_id");
+			// }
 
-			if(bondEntryMap.get("bond_type").length===1){
-				mol2FileString+="    "+bondEntryMap.get("bond_type")+"\n";
-			}
-			else {
-				mol2FileString+="   "+bondEntryMap.get("bond_type")+"\n";
-			}
+			// if(bondEntryMap.get("bond_type").length===1){
+			// 	mol2FileString+="    "+bondEntryMap.get("bond_type")+"\n";
+			// }
+			// else {
+			// 	mol2FileString+="   "+bondEntryMap.get("bond_type")+"\n";
+			// }
 		});
-
+		console.log(mol2FileString);
 		return mol2FileString;
 	};
+
+	const formatSpacing = (spacingMap) =>
+	{
+		var largestStringLength=0;
+		spacingMap.forEach((value,key)=>{
+			const JSONEntryMap=new Map(Object.entries(value));
+			JSONEntryMap.forEach((value,key)=>{
+				largestStringLength=Math.max(largestStringLength,value.length)
+			})
+		
+		})
+		return largestStringLength+1;
+	}
 
 
 	const downloadCSV = () => {
