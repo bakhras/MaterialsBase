@@ -298,7 +298,9 @@ const AddCompound = () => {
 		  			name="comp_properties"
 		  		/>
 		  	</div>
+			<div style={{textAlign:"center"}}>
 		  	<button onClick={saveCompound} className="btn btn-success mt-2">Submit</button>
+		  	</div>
 		  </div>
 		)}
 	  </div>

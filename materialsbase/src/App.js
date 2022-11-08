@@ -12,17 +12,20 @@ function App() {
 	<Router>
 		<nav className="navbar navbar-expand-lg navbar-light bg-light border border-5 mb-4">
 			<div className="container-fluid">
-				<div className="navbar-brand me-2 fw-bold fs-3">
-					<Link to ={"/"}>Materials Base</Link>
+				<div className="navbar-brand me-2 fw-bold fs-3 navTextColor">
+					<Link className="navTextColor" to ={"/"}><img class="logoSize" src="https://nanobiodata.org/media/materialsbase_logo_hu3e97efd0d98c5f8688f6945ae1776379_28765_540x0_resize_q75_h2_lanczos_3.webp"></img></Link>
 				</div>
 
 				<nav aria-label="breadcrumb">
 					<ol className="breadcrumb">
 						<li className="breadcrumb-item fw-bolder">
-							<Link to={"/"}>Homepage</Link>
+							<Link className="navTextColor" to={"/"} >Homepage</Link>
 						</li>
-						<li className="breadcrumb-item fw-bolder">
-							<Link to={"/add"}>Add Compound</Link>
+						<li className="breadcrumb-item fw-bolder ">
+							<Link className="color: white"to={"/add"}>Add Compound</Link>
+						</li>
+						<li className="breadcrumb-item fw-bolder ">
+							<a href="https://nanobiodata.org/project/materialsbase/">About</a>
 						</li>
 					</ol>
 				</nav>

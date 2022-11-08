@@ -216,12 +216,14 @@ const CompoundsList = () => {
 			<div className="col-md-8">
 				<div className="input-group mb-3">
 					<input
-						type="text"
+						type="search"
 						className="form-control"
 						placeholder="Search by name"
 						value={searchTitle}
 						onChange={onChangeSearchTitle}
 					/>
+				
+					
 				</div>
 			</div>
 		</div>
@@ -242,11 +244,15 @@ const CompoundsList = () => {
 						{compound.comp_material}
 					</li></strong>
 				))}
+				
 			</ul>
+			<div style={{textAlign:"center"}}>
 			<button
+			
 				className="m-3 btn btn-sm btn-danger"
 				onClick={removeAllCompounds}
 			>Remove All</button>
+			</div>
 		</div>
 		<div className="col">
 			{currentCompound ? (
