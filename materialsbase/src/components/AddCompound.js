@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { createCompound } from "../actions/compounds";
 import Papa from "papaparse"; /* csv extraction */
 import { Link } from "react-router-dom";
+import checkmark from "../checkmark.png";
 
 const AddCompound = () => {
 	const initialCompoundState = {
@@ -226,12 +227,25 @@ const AddCompound = () => {
   return(
 	  <div className="submit-form">
 	  {submitted ? (
-		  <div>
+		  <div style={{textAlign:"center"}}>
 			<h4>Compound data submitted succesfully!</h4>
+			<div className="row" >
+			<img className="checkAni" src={checkmark}></img>
+			</div>
+			<div style={{paddingTop:"5%"}} className="row justify-content-center">
+			
+			<div className="col col-md-4">
 			<button className="btn btn-success" onClick={newCompound}>Add</button>
-		  	<button className="btn btn-success text-light">
-		  		<Link to={"/"}>Home</Link>
+			</div>
+			<div className="col col-md-4">
+			<Link style={{color: "white"}}  to={"/"}>
+		  	<button  className="btn btn-success text-light">
+		  		Home
 		  	</button>
+			  </Link>
+			  
+			  </div>
+			  </div>
 		  </div>
 	  ) : (
 		  <div>

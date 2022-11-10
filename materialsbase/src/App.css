@@ -67,14 +67,33 @@
   color: white;
   font-size: large;
   transition: all .5s ease;
+ 
 }
 
+.navbar .breadcrumb .breadcrumb-item a:hover{
+  font-size: larger;
+  text-decoration: underline;
+  transition: all .5s ease;
+ 
+}
 
 .logoSize{
-  width: 30%;
+  width: 50%;
   height: 20%;
+  
 }
-
+.logoSize:hover{
+  transform: scale(1.1);
+  filter: invert();
+  
+  transition: all .6s ease;
+  
+}
+.compBtn:hover{
+  transform: scale(1.05);
+  background-color: #488aab57;
+  transition: all .5s ease;
+}
 input[type="search"] {
  
   background: transparent;
@@ -91,25 +110,31 @@ input[type="search"]::placeholder {
   color: #bbb;
 }
 
-button[type="submit"] {
-  text-indent: -999px;
-  overflow: hidden;
-  width: 40px;
-  padding: 0;
-  margin: 0;
-  border: 1px solid transparent;
-  border-radius: inherit;
-  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
-  cursor: pointer;
-  opacity: 0.7;
+
+
+.list-group-item:hover{
+  transform: scale(1.025);
+  background-color: #488aab57;
+  border-color: #488aab57;
+  transition: all .5s ease;
 }
 
-button[type="submit"]:hover {
-  opacity: 1;
+@keyframes checkmark {
+  from {
+    transform: scale(.05);
+    transform: rotate(0deg);
+  }
+  to {
+    transform: scale(1);
+    transform: rotate(360deg);
+  }
 }
-button[type="submit"]:focus,
-input[type="search"]:focus {
-  box-shadow: 0 0 3px 0 #1183d6;
-  border-color: #1183d6;
-  outline: none;
+
+.checkAni{
+  filter: invert(50%) sepia(77%) saturate(1828%) hue-rotate(107deg) brightness(90%) contrast(101%);
+  width: 20%;
+  height: 20%;
+  animation-name: checkmark;
+  animation-duration: 1s;
+  margin: auto;
 }

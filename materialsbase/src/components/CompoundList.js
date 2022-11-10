@@ -212,9 +212,9 @@ const CompoundsList = () => {
 
 	return (
 		<div className="container">
-		<div className="row">
-			<div className="col-md-8">
-				<div className="input-group mb-3">
+		<div className="row" >
+			<div className="col-md-8" style={{margin:"auto"}}>
+				<div className="input-group mb-3"  style={{textAlign:"center"}}  >
 					<input
 						type="search"
 						className="form-control"
@@ -227,7 +227,7 @@ const CompoundsList = () => {
 				</div>
 			</div>
 		</div>
-		<div className="row">
+		<div className="row" style={{margin:"auto"}}>
 
 		<div className="col">
 			<h4>Compounds List</h4>
@@ -246,7 +246,7 @@ const CompoundsList = () => {
 				))}
 				
 			</ul>
-			<div style={{textAlign:"center"}}>
+			<div style={{margin:"auto",textAlign:"center"}}>
 			<button
 			
 				className="m-3 btn btn-sm btn-danger"
@@ -254,6 +254,7 @@ const CompoundsList = () => {
 			>Remove All</button>
 			</div>
 		</div>
+		
 		<div className="col">
 			{currentCompound ? (
 				<div>
@@ -277,41 +278,50 @@ const CompoundsList = () => {
 					</label>
 					{ " " + currentCompound.comp_notation}
 				</div>
-				<div className="imput-group-append">
+				<div >
+				<div className="input-group-append" style={{display:"grid"}}>
+				 
 					<button
 						type="button"
-						className="btn btn-primary mb-2"
+						className="btn btn-primary mb-2 compBtn"
 						onClick={()=>handleView()}
 					>View Properties...
 					</button>
 				</div>
-				<div className="input-group-append">
+				<div className="input-group-append" style={{display:"grid"}}>
 					<button
 						type="button"
-						className="btn btn-outline-dark mb-2"
+						className="btn btn-outline-dark mb-2 compBtn"
 
 						onClick={ ()=> downloadMol2() }
 					>Download mol2 (.mol2)</button>
 				</div>
-				<div className="input-group-append">
+				<div className="input-group-append" style={{display:"grid"}}>
 					<button
 						type="button"
-						className="btn btn-outline-dark mb-2"
+						className="btn btn-outline-dark mb-2 compBtn"
 						onClick={()=> downloadCSV() }
 					>Download Properties (.csv)</button>
 				</div>
-				<Link
+				</div>
+				<div style={{textAlign:"center"}}>
+				<Link 
 					to={"/" + currentCompound.comp_id}
-					className="badge badge-primary mt-2 w-25 p-3"
+					
 				>
-				Edit
-				</Link>
+				<button 
+						type="button"
+						className="btn btn-outline-dark mb-2 compBtn"
+						
+					>Edit</button>
+					</Link>
+				</div>
 				</div>
 
 			) : (
-				<div>
+				<div >
 					<br />
-					<MDBCard style={{ maxWidth: '22rem' }}>
+					<MDBCard style={{ maxWidth: '22rem',backgroundColor:"#488aab57",margin:"auto", boxShadow: "2px 2px 5px"}}>
 						<MDBCardBody>
 							<MDBCardTitle className="fw-bold">Quick Manual</MDBCardTitle>
 							<MDBCardText>
@@ -322,9 +332,9 @@ const CompoundsList = () => {
 				</div>
 			)}
 		</div>
-		<div className="col">
+		
 		{viewMode === true ? (
-				<div>
+				<div className="col">
 				<h4> Properties Table </h4>
 				<table className="table table-striped table-bordered table-sm mt-2" style={{display:"block",height:"400px",width:"230px", overflow:"auto"}}>
 					<thead>
@@ -345,10 +355,10 @@ const CompoundsList = () => {
 				</div>
 		) : (
 			<div>
-
+			
 			</div>
 		)}
-		</div>
+		
 		</div>
 		</div>
 	);

@@ -5,6 +5,8 @@ import './App.css';
 import Compound from "./components/Compound";
 import CompoundList from "./components/CompoundList";
 import AddCompound from "./components/AddCompound";
+import logo from "./Materialsbase_logo.png";
+
 
 function App() {
 	return(
@@ -13,7 +15,7 @@ function App() {
 		<nav className="navbar navbar-expand-lg navbar-light bg-light border border-5 mb-4">
 			<div className="container-fluid">
 				<div className="navbar-brand me-2 fw-bold fs-3 navTextColor">
-					<Link className="navTextColor" to ={"/"}><img class="logoSize" src="https://nanobiodata.org/media/materialsbase_logo_hu3e97efd0d98c5f8688f6945ae1776379_28765_540x0_resize_q75_h2_lanczos_3.webp"></img></Link>
+					<Link className="navTextColor" to ={"/"}><img class="logoSize" src={logo}></img></Link>
 				</div>
 
 				<nav aria-label="breadcrumb">
@@ -41,7 +43,7 @@ function App() {
 	</MDBContainer>
 
 	<footer className="text-center text-light fixed-bottom" style={{backgroundColor:"#f1f1f1"}}>
-		<div className="container pt-5">
+		<div className="container pt-3">
 			<section>
 				<a className="btn btn-link btn-floating btn-lg text-dark m-1"
 				   href="https://github.com/bakhras/MaterialsBase"

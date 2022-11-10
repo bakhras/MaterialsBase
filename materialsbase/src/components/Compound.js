@@ -85,7 +85,7 @@ const Compound = (props) => {
 		{console.log(currentCompound)}
 		{currentCompound ? (
 				<div className="edit-form">
-					<h4>Compound</h4>
+					<h4 style={{textAlign:"center"}}>Compound</h4>
 					<form>
 						<div className="form-group">
 							<label htmlFor="comp_index">comp_index</label>
@@ -122,15 +122,18 @@ const Compound = (props) => {
 						</div>
 
 				</form>
+				<div style={{textAlign:"center",marginTop:"5%"}}>
 				<button
-					className="badge badge-danger mx-2 mt-4"
+					className="btn btn-danger"
+					style={{marginRight:"2%"}}
 					onClick={removeCompound}
 					>Delete</button>
 				<button
 					type="Submit"
-					className="badge badge-success"
+					className="btn btn-success"
 					onClick={updateContent}
 					>Update</button>
+				</div>
 				<p>{message}</p>
 			</div>
 			) : (
