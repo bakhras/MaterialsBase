@@ -32,10 +32,11 @@ const AddCompound = () => {
 	//};
 
 	const handleCsvUpload = event => {
-		const { name, file} = event.target;
+		const { name } = event.target;
 		Papa.parse(document.getElementById('comp_properties').files[0], {
 			header: true,
 			dynamicTyping: true,
+			quotes: true,
 			complete: function(results) {
 				setCompound({...compound, [name]: results.data[0] });
 			}
@@ -44,7 +45,7 @@ const AddCompound = () => {
 
 	//Used to parse Mol2 file into Json Format
 	const handleMolUpload = event => {
-		const { name, file } = event.target;
+		const { name } = event.target;
 		const reader = new FileReader();
 		reader.readAsText(document.getElementById('comp_mol2').files[0]);
 		reader.onload = () => {
@@ -88,62 +89,60 @@ const AddCompound = () => {
 		if(dataRecord[0]==="ATOM"){
 			recordString+='"atom":  {"'
 			for (let i = 1; i < dataRecord.length; i++) {
-				if(dataRecord[i]!==""){
-				if (i===1){
-				recordString+=i+'": {"';
-				}
-				else{
-					recordString+=',"'+i+'": {"';
-				}
-				var intsplit= dataRecord[i].split(" ").filter( function(e) { return e.trim().length > 0; } );
-					recordString+='atom_id":'+'"'+intsplit[0]+'","';
-					recordString+='atom_name":'+'"'+intsplit[1]+'","';
-					recordString+='x":'+'"'+intsplit[2]+'","';
-					recordString+='y":'+'"'+intsplit[3]+'","';
-					recordString+='z":'+'"'+intsplit[4]+'","';
-					recordString+='atom_type":'+'"'+intsplit[5]+'","';
-					recordString+='subst_id":'+'"'+intsplit[6]+'","';
-					recordString+='subst_name":'+'"'+intsplit[7]+'","';
-					recordString+='charge":'+'"'+intsplit[8]+'"}';
-
+				if(dataRecord[i]!=="") {
+					if (i===1){
+						recordString+=i+'": {"';
+					}
+					else {
+						recordString+=',"'+i+'": {"';
+					}
+					var intsplit= dataRecord[i].split(" ").filter( function(e) { return e.trim().length > 0; } );
+					
+					recordString+='atom_id":"'+intsplit[0]+'","';
+					recordString+='atom_name":"'+intsplit[1]+'","';
+					recordString+='x":"'+intsplit[2]+'","';
+					recordString+='y":"'+intsplit[3]+'","';
+					recordString+='z":"'+intsplit[4]+'","';
+					recordString+='atom_type":"'+intsplit[5]+'","';
+					recordString+='subst_id":"'+intsplit[6]+'","';
+					recordString+='subst_name":"'+intsplit[7]+'","';
+					recordString+='charge":"'+intsplit[8]+'"}';
 				}
 				if (i===dataRecord.length-1){
 					recordString+="}";
 				}
-
 			}
-
 		}
 		else if(dataRecord[0]==="MOLECULE"){
 			recordString+='"molecule":  {"'
 			for (let i = 1; i < 7; i++) {
 				if(i===1){
-					recordString+='mol_name":'+'"'+dataRecord[i]+'","';
+					recordString+='mol_name":"'+dataRecord[i]+'","';
 				}
 
 				else if(i===2){
 					intsplit=dataRecord[i].split(" ");
-					recordString+='num_atoms":'+'"'+intsplit[1]+'","';
-					recordString+='num_bonds":'+'"'+intsplit[2]+'","';
-					recordString+='num_subst":'+'"'+intsplit[3]+'","';
-					recordString+='num_feat":'+'"'+intsplit[4]+'","';
-					recordString+='num_sets":'+'"'+intsplit[5]+'","';
+					recordString+='num_atoms":"'+intsplit[1]+'","';
+					recordString+='num_bonds":"'+intsplit[2]+'","';
+					recordString+='num_subst":"'+intsplit[3]+'","';
+					recordString+='num_feat":"'+intsplit[4]+'","';
+					recordString+='num_sets":"'+intsplit[5]+'","';
 				}
 
 				else if (i===3){
-					recordString+='mol_type":'+'"'+dataRecord[i]+'","';
+					recordString+='mol_type":"'+dataRecord[i]+'","';
 				}
 
 				else if (i===4){
-					recordString+='charge_type":'+'"'+dataRecord[i]+'","';
+					recordString+='charge_type":"'+dataRecord[i]+'","';
 				}
 
 				else if (i===5){
-					recordString+='status_bits":'+'"'+dataRecord[i]+'","';
+					recordString+='status_bits":"'+dataRecord[i]+'","';
 				}
 
 				else if (i===6){
-					recordString+='mol_comment":'+'"'+dataRecord[i]+'"}';
+					recordString+='mol_comment":"'+dataRecord[i]+'"}';
 				}
 
 			}
@@ -162,12 +161,10 @@ const AddCompound = () => {
 					}
 
 					intsplit= dataRecord[i].split(" ").filter( function(e) { return e.trim().length > 0; } );
-					recordString+='bond_id":'+'"'+intsplit[0]+'","';
-					recordString+='origin_atom_id":'+'"'+intsplit[1]+'","';
-					recordString+='target_atom_id":'+'"'+intsplit[2]+'","';
-					recordString+='bond_type":'+'"'+intsplit[3]+'"}';
-
-
+					recordString+='bond_id":"'+intsplit[0]+'","';
+					recordString+='origin_atom_id":"'+intsplit[1]+'","';
+					recordString+='target_atom_id":"'+intsplit[2]+'","';
+					recordString+='bond_type":"'+intsplit[3]+'"}';
 				}
 
 				if (i===dataRecord.length-1){
@@ -230,7 +227,7 @@ const AddCompound = () => {
 		  <div style={{textAlign:"center"}}>
 			<h4>Compound data submitted succesfully!</h4>
 			<div className="row" >
-			<img className="checkAni" src={checkmark}></img>
+			<img className="checkAni" src={checkmark} alt=""></img>
 			</div>
 			<div style={{paddingTop:"5%"}} className="row justify-content-center">
 			

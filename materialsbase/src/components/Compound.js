@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { updateCompound, deleteCompound } from "../actions/compounds";
@@ -19,7 +19,8 @@ const Compound = (props) => {
 	const [currentCompound, setCurrentCompound] = useState(initialCompoundState);
 	const [message, setMessage] = useState("");
 	const dispatch = useDispatch();
-	const getCompound = () => {
+	
+	const getCompound = useCallback(() => {
 		CompoundDataService.get(id.comp_id)
 		.then(response => {
 			setCurrentCompound(response.data);
@@ -27,35 +28,15 @@ const Compound = (props) => {
 		.catch(err => {
 			console.log(err);
 		});
-	};
+	}, [id.comp_id]);
 
 	useEffect(() => {
 		getCompound();
-	}, []);
+	}, [getCompound]);
 
 	const handleInputChange = event => {
 		const { name, value } = event.target;
 		setCurrentCompound({ ...currentCompound, [name]: value });
-	};
-
-	const updateStatus = status => {
-		const data = {
-			comp_id: currentCompound.comp_id,
-			comp_index: currentCompound.comp_index,
-			comp_material: currentCompound.comp_material,
-			comp_notation: currentCompound.comp_notation,
-			comp_mol2: currentCompound.comp_mol2,
-			comp_components: currentCompound.comp_components,
-			comp_properties: currentCompound.comp_properties,
-		};
-		dispatch(updateCompound(currentCompound.comp_id, data))
-		.then(response => {
-			console.log(response.data);
-			setMessage("The compound was updated successfully.");
-		})
-		.catch(err => {
-			console.log(err);
-		});
 	};
 
 	const updateContent = () => {

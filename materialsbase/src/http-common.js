@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export default axios.create({
-	baseURL: "http://localhost:8080/api",
+	// TO-DO make this more intelligent: is it localhost:port or a URL ? make this a process.env style flag
+	baseURL: "https://backend.nanobiodata.org/api",
 	headers: {
 		"Content-type": "application/json"
 	}

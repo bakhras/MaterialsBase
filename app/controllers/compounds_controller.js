@@ -69,70 +69,72 @@ exports.update = (req,res) => {
 		});
 	}
 
-	const comp_elements = Compound.findByPk(comp_id)
+	Compound.findByPk(req.params.comp_id)
 	.then(data => {
-		return data;
+		
+		console.log(data.dataValues.comp_id);
+
+		var new_compound = {
+			comp_id: data.dataValues.comp_id,
+			comp_index: null,
+			comp_material: null,
+			comp_notation: null,
+			comp_mol2: null,
+			comp_properties: null,
+		};
+
+		if(!req.body.comp_index || req.body.comp_index == null) {
+			new_compound.comp_index = data.dataValues.comp_index;
+		} else {
+			new_compound.comp_index = req.body.comp_index;
+		}
+		if(!req.body.comp_material || req.body.comp_material == null) {
+			new_compound.comp_material = data.dataValues.comp_material;
+		} else {
+			new_compound.comp_material = req.body.comp_material;
+		}
+		if(!req.body.comp_notation || req.body.comp_notation == null) {
+			new_compound.comp_notation = data.dataValues.comp_notation;
+		} else {
+			new_compound.comp_notation = req.body.comp_notation;
+		}
+		if(!req.body.comp_mol2 || req.body.comp_mol2 == null) {
+			new_compound.comp_mol2 = data.dataValues.comp_mol2;
+		} else {
+			new_compound.comp_mol2 = req.body.comp_mol2;
+		}
+		if(!req.body.comp_properties || req.body.comp_properties == null) {
+			new_compound.comp_properties = data.dataValues.comp_properties;
+		} else {
+			new_compound.comp_properties = req.body.comp_properties;
+		}
+
+		Compound.update(new_compound, {
+			where: { comp_id: new_compound.comp_id }
+		})
+		.then(num => {
+			if (num == 1) {
+				res.status(200).send({
+					message: "Compound updated successfully."
+				});
+			} else {
+				res.status(400).send({
+					message: "Cannot update compound with id=" + data.dataValues.comp_id
+				});
+			}
+		})
+		.catch(err => {
+			res.status(500).send({
+				message: err.message
+			});
+		});
+
 	})
 	.catch(err => {
 		res.status(500).send({
 			message: err.message
 		});
 		return;
-	});
-
-	var new_compound = {
-		comp_id: comp_elements.comp_id,
-		comp_index: null,
-		comp_material: null,
-		comp_notation: null,
-		comp_mol2: null,
-		comp_properties: null,
-	};
-
-	if(!req.body.comp_index || req.body.comp_index == null) {
-		new_compound.comp_index = comp_elements.comp_index;
-	} else {
-		new_compound.comp_index = req.body.comp_index;
-	}
-	if(!req.body.comp_material || req.body.comp_material == null) {
-		new_compound.comp_material = comp_elements.comp_material;
-	} else {
-		new_compound.comp_material = req.body.comp_material;
-	}
-	if(!req.body.comp_notation || req.body.comp_notation == null) {
-		new_compound.comp_notation = comp_elements.comp_notation;
-	} else {
-		new_compound.comp_notation = req.body.comp_material;
-	}
-	if(!req.body.comp_mol2 || req.body.comp_mol2 == null) {
-		new_compound.comp_mol2 = comp_elements.comp_mol2;
-	} else {
-		new_compound.comp_mol2 = req.body.comp_mol2;
-	}
-	if(!req.body.comp_properties || req.body.comp_properties == null) {
-		new_compound.comp_properties = comp_elements.comp_properties;
-	} else {
-		new_compound.comp_properties = req.body.comp_properties;
-	}
-
-	Compound.update(new_compound, {
-		where: { comp_id: comp_id }
-	})
-	.then(num => {
-		if (num == 1) {
-			res.status(200).send({
-				message: "Compound updated successfully."
-			});
-		} else {
-			res.status(400).send({
-				message: "Cannot update compound with id="+new_compound.comp_id
-			});
-		}
-	})
-	.catch(err => {
-		res.status(500).send({
-			message: err.message
-		});
 	});
 };
 

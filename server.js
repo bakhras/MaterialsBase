@@ -91,7 +91,10 @@ app.use(session({
 
 // produces a cors middleware route to localhost for express
 var corsOptions = {
-	origin: "http://localhost:3000"
+	// TODO make this a process.env style option
+	// is this {protocol}://{host}:{port} or a URL?
+	//origin: "http://localhost:3000"
+	origin: "https://db.nanobiodata.org"
 };
 
 // use cors to provide connection config

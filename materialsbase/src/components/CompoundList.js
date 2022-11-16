@@ -1,13 +1,14 @@
-import React, { useState, useEffect, dispatch } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	retrieveCompounds,
-	findCompoundById,
-	findCompoundByIndex,
+	//findCompoundById,
+	//findCompoundByIndex,
 	deleteAllCompounds,
 } from "../actions/compounds";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
+import Papa from "papaparse"; /* csv extraction */
 
 const CompoundsList = () => {
 	const [currentCompound, setCurrentCompound] = useState(null);
@@ -19,7 +20,7 @@ const CompoundsList = () => {
 
 	useEffect(() => {
 		dispatch(retrieveCompounds());
-	}, []);
+	}, [dispatch]);
 
 	const onChangeSearchTitle = e => {
 		const searchTitle = e.target.value;
@@ -47,10 +48,10 @@ const CompoundsList = () => {
 		});
 	};
 
-	const findByTitle = () => {
-		refreshData();
-		dispatch(findCompoundByIndex(searchTitle));
-	};
+	//const findByTitle = () => {
+	//	refreshData();
+	//	dispatch(findCompoundByIndex(searchTitle));
+	//};
 
 	const downloadMol2 = () => {
 		const element = JSONtoMOL2();
@@ -128,43 +129,6 @@ const CompoundsList = () => {
 				bondEntryMap.get("origin_atom_id").padStart(numPaddingBOND," ")+
 				bondEntryMap.get("target_atom_id").padStart(numPaddingBOND," ")+
 				bondEntryMap.get("bond_type").padStart(numPaddingBOND," ")+"\n";
-			//console.log(mol2FileString);
-			// if(bondEntryMap.get("bond_id").length===1){
-			// 	mol2FileString+="     "+bondEntryMap.get("bond_id");
-			// }
-			// else if(bondEntryMap.get("bond_id").length===2){
-			// 	mol2FileString+="    "+bondEntryMap.get("bond_id");
-			// }
-			// else{
-			// 	mol2FileString+="   "+bondEntryMap.get("bond_id");
-			// }
-
-			// if(bondEntryMap.get("origin_atom_id").length===1){
-			// 	mol2FileString+="     "+bondEntryMap.get("origin_atom_id");
-			// }
-			// else if(bondEntryMap.get("origin_atom_id").length===2){
-			// 	mol2FileString+="    "+bondEntryMap.get("origin_atom_id");
-			// }
-			// else{
-			// 	mol2FileString+="   "+bondEntryMap.get("origin_atom_id");
-			// }
-
-			// if(bondEntryMap.get("target_atom_id").length===1){
-			// 	mol2FileString+="     "+bondEntryMap.get("target_atom_id");
-			// }
-			// else if(bondEntryMap.get("target_atom_id").length===2){
-			// 	mol2FileString+="    "+bondEntryMap.get("target_atom_id");
-			// }
-			// else{
-			// 	mol2FileString+="   "+bondEntryMap.get("target_atom_id");
-			// }
-
-			// if(bondEntryMap.get("bond_type").length===1){
-			// 	mol2FileString+="    "+bondEntryMap.get("bond_type")+"\n";
-			// }
-			// else {
-			// 	mol2FileString+="   "+bondEntryMap.get("bond_type")+"\n";
-			// }
 		});
 		console.log(mol2FileString);
 		return mol2FileString;
@@ -185,9 +149,10 @@ const CompoundsList = () => {
 
 
 	const downloadCSV = () => {
-		const element = currentCompound.comp_properties;
+		const result = Papa.unparse([currentCompound.comp_properties])
+		console.log(result)
 		const url = window.URL.createObjectURL(
-			new Blob([element])
+			new Blob([result],{type: 'text/csv;charset=utf-8;'})
 		);
 		const link = document.createElement('a');
 		const filename = currentCompound.comp_material + ".csv";
@@ -196,7 +161,6 @@ const CompoundsList = () => {
 			'download',
 			filename
 		);
-
 		document.body.appendChild(link);
 		link.click();
 		link.parentNode.removeChild(link);
@@ -222,7 +186,6 @@ const CompoundsList = () => {
 						value={searchTitle}
 						onChange={onChangeSearchTitle}
 					/>
-				
 					
 				</div>
 			</div>
@@ -344,7 +307,8 @@ const CompoundsList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys( JSON.parse(JSON.stringify(currentCompound.comp_properties))).map((key,i)=> (
+						{Object.keys( JSON.parse(JSON.stringify(currentCompound.comp_properties))).sort().map((key, i)=>
+							(
 							<tr key={i}>
 								<td className="fw-bold">{key}</td>
 								<td>{ JSON.parse(JSON.stringify(currentCompound.comp_properties))[key] }</td>

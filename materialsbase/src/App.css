@@ -1,42 +1,44 @@
-@import '~mdb-ui-kit/css/mdb.min.css';
+/* @import '~mdb-ui-kit/css/mdb.min.css'; */ 
+/* Why is this an import? 
+ * we should be sending static info instead */
 
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+	height: 40vmin;
+	pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+	.App-logo {
+	animation: App-logo-spin infinite 20s linear;
+	}
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+	transform: rotate(0deg);
+	}
+	to {
+	transform: rotate(360deg);
+	}
 }
 
 .list {
@@ -56,85 +58,80 @@
 }
 
 .navbar{
-  background-image: linear-gradient(90deg, #488aab, #614385);
+	background-image: linear-gradient(90deg, #488aab, #614385);
 }
 
 .navTextColor{
-  color: white;
+	color: white;
 }
 
 .navbar .breadcrumb .breadcrumb-item a{
-  color: white;
-  font-size: large;
-  transition: all .5s ease;
- 
+	color: white;
+	font-size: large;
+	transition: all .5s ease;
 }
 
 .navbar .breadcrumb .breadcrumb-item a:hover{
-  font-size: larger;
-  text-decoration: underline;
-  transition: all .5s ease;
- 
+	font-size: larger;
+	text-decoration: underline;
+	transition: all .5s ease;
 }
 
 .logoSize{
-  width: 50%;
-  height: 20%;
-  
+	width: 50%;
+	height: 20%;
 }
+
 .logoSize:hover{
-  transform: scale(1.1);
-  filter: invert();
-  
-  transition: all .6s ease;
-  
+	transform: scale(1.1);
+	filter: invert();
+	transition: all .6s ease;
 }
+
 .compBtn:hover{
-  transform: scale(1.05);
-  background-color: #488aab57;
-  transition: all .5s ease;
+	transform: scale(1.05);
+	background-color: #488aab57;
+	transition: all .5s ease;
 }
+
 input[type="search"] {
- 
-  background: transparent;
-  margin: 0;
-  padding: 7px 8px;
-  font-size: 14px;
-  color: inherit;
-  
- 
-  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 99% ;
+	background: transparent;
+	margin: 0;
+	padding: 7px 8px;
+	font-size: 14px;
+	color: inherit;
+	
+	/*TO-DO: implement font-awesome icon here */
 }
 
 input[type="search"]::placeholder {
-  color: #bbb;
+	color: #bbb;
 }
-
 
 
 .list-group-item:hover{
-  transform: scale(1.025);
-  background-color: #488aab57;
-  border-color: #488aab57;
-  transition: all .5s ease;
+	transform: scale(1.025);
+	background-color: #488aab57;
+	border-color: #488aab57;
+	transition: all .5s ease;
 }
 
 @keyframes checkmark {
-  from {
-    transform: scale(.05);
-    transform: rotate(0deg);
-  }
-  to {
-    transform: scale(1);
-    transform: rotate(360deg);
-  }
+	from {
+		transform: scale(.05);
+		transform: rotate(0deg);
+	}
+	to {
+		transform: scale(1);
+		transform: rotate(360deg);
+	}
 }
 
 .checkAni{
-  filter: invert(50%) sepia(77%) saturate(1828%) hue-rotate(107deg) brightness(90%) contrast(101%);
-  width: 20%;
-  height: 20%;
-  animation-name: checkmark;
-  animation-duration: 1s;
-  margin: auto;
+	filter: invert(50%) sepia(77%) saturate(1828%) hue-rotate(107deg) brightness(90%) contrast(101%);
+	width: 20%;
+	height: 20%;
+	animation-name: checkmark;
+	animation-duration: 1s;
+	margin: auto;
 }
