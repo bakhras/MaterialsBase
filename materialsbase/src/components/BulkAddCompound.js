@@ -2,22 +2,37 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { updateCompound, deleteCompound } from "../actions/compounds";
+import { createCompound } from "../actions/compounds";
 import CompoundDataService from "../services/compound.service";
-import { CsvToHtmlTable } from 'react-csv-to-table';
 import Papa from "papaparse"; /* csv extraction */
 
-
+class Compound{
+	
+	constructor(comp_index,comp_material,comp_notation,comp_mol2,comp_prop,comp_components){
+		this.comp_index=comp_index;
+		this.comp_material=comp_material;
+		this.comp_notation=comp_notation;
+		this.comp_mol2=comp_mol2;
+		this.comp_prop=comp_prop;
+		this.comp_components=comp_components;
+	}
+}
 
 
 const BulkAddCompound = () => {
+	const compoundsList=[];
 	const csv= "";
 	const [bulkCsv, setCSV] = useState(csv);
+	const dispatch = useDispatch();
+		dispatch(createCompound);
+
 const handleCsvUpload = event => {
 	const reader = new FileReader();
 		reader.readAsText(document.getElementById('bulkCsv').files[0]);
 		Papa.parse(document.getElementById('bulkCsv').files[0], {
 			header: true,
 			dynamicTyping: true,
+			skipEmptyLines:true,
 			complete: function(results) {
 				
 				setCSV(results.data);
@@ -33,26 +48,29 @@ const handleCsvUpload = event => {
 
 const addRows = () => {
 	for(let x=0;x< bulkCsv.length;x++){
+	
 	console.log(bulkCsv);
 	//creates a new row element
 	let row = document.createElement("tr");
-	 row.id="row"+x;
+	 row.id= x;
 	//creates a new column element
 	let column1 = document.createElement("td");
 	
 	//create text for the column element
 	const column1text = document.createTextNode(bulkCsv[x]["Compound Index"]);
+	column1.id="comp_index_"+x;
 	//appends the text to the column element
 	column1.appendChild(column1text);
 	let column2 = document.createElement("td");
 
 	const column2text = document.createTextNode(bulkCsv[x]["Compound Material"]);
+	column2.id="comp_material_"+x;
 	column2.appendChild(column2text);
 
 	let column3 = document.createElement("td");
 
 	const column3text = document.createTextNode(bulkCsv[x]["Compound Notation"]);
-	
+	column3.id="comp_notation_"+x;
 	column3.appendChild(column3text);
 	
 	let column4 = document.createElement("td");
@@ -61,6 +79,8 @@ const addRows = () => {
 		column4input.type="file";
 		column4input.id="mol2_"+x;
 		column4input.accept=".mol2, .txt";
+		column4input.onchange=function(){handleMolUpload(x);};
+		console.log(column4input);
 	column4.appendChild(column4input);
 
 	let column5 = document.createElement("td");
@@ -69,6 +89,7 @@ const addRows = () => {
 		column5input.type="file";
 		column5input.id="properties_"+x;
 		column5input.accept=".csv, .txt";
+		column5input.onchange=function(){handlePropertyUpload(x);};
 	column5.appendChild(column5input);
 
 	//appends the first column to the new row
@@ -83,30 +104,34 @@ const addRows = () => {
 	row.appendChild(column4);
 
 	row.appendChild(column5);
-	
+
+	const newCompound= new Compound(bulkCsv[x]["Compound Index"],bulkCsv[x]["Compound Material"],bulkCsv[x]["Compound Notation"],"","","");
+	compoundsList.push(newCompound);
 	//appends the row to the table
 	document.querySelector("#main-table").appendChild(row);
 	}
+	console.log(compoundsList);
 	};
 
-const uploadRow= (rowNum) =>{
-	
-};
+
 
 const handlePropertyUpload=(rowNum)  => {
 	
 	Papa.parse(document.getElementById('properties_'+rowNum).files[0], {
 		header: true,
 		dynamicTyping: true,
+		skipEmptyLines:true,
 		complete: function(results) {
-			
+			console.log(results.data);
+			compoundsList[rowNum].comp_prop=results.data;
+			console.log(compoundsList);
 		}
 	});
 };
 
 //Used to parse Mol2 file into Json Format
 const handleMolUpload = (rowNum) => {
-	
+	console.log(rowNum);
 	const reader = new FileReader();
 	reader.readAsText(document.getElementById('mol2_'+rowNum).files[0]);
 	reader.onload = () => {
@@ -136,7 +161,9 @@ const handleMolUpload = (rowNum) => {
 				}
 			}
 		}
-		console.log(mol2JSONString);
+		//console.log(mol2JSONString);
+		compoundsList[rowNum].comp_mol2= mol2JSONString;
+		
 		
 	};
 };
@@ -242,8 +269,35 @@ const checkDataRecord = (dataRecord) => {
 	}
 	return recordString;
 }
-const uploadCompounds= () =>{
 
+const uploadRow= (rowNum) =>{
+	
+	dispatch(createCompound(
+		compoundsList[rowNum].comp_index,
+		compoundsList[rowNum].comp_material,
+		compoundsList[rowNum].comp_notation,
+		compoundsList[rowNum].comp_mol2,
+		compoundsList[rowNum].comp_components,
+		compoundsList[rowNum].comp_prop,
+	))
+		.then(data => {
+			console.log(data);
+			
+	
+
+
+			  })
+		.catch(e => {
+			console.log(e);
+		});
+	
+   
+};
+
+const uploadCompounds= () =>{
+	for(let i=0;i<compoundsList.length;i++){
+		uploadRow(i);
+	}
 };
 	
 
