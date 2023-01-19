@@ -4,8 +4,8 @@ import './App.css';
 import Compound from "./components/Compound";
 import CompoundList from "./components/CompoundList";
 import AddCompound from "./components/AddCompound";
+import BulkAddCompound from "./components/BulkAddCompound";
 import logo from "./Materialsbase_logo.png";
-
 
 function App() {
 	return(
@@ -28,6 +28,9 @@ function App() {
 						<li className="breadcrumb-item fw-bolder ">
 							<a href="https://nanobiodata.org/project/materialsbase/">About</a>
 						</li>
+						<li className="breadcrumb-item fw-bolder">
+							<Link to={"/bulkAdd"}>Bulk Add Compound</Link>
+						</li>
 					</ol>
 				</nav>
 			</div>
@@ -37,6 +40,7 @@ function App() {
 			<Routes>
 				<Route exact path="/" element={<CompoundList />} />
 				<Route exact path="/add" element={<AddCompound />} />
+				<Route exact path="/bulkAdd" element={<BulkAddCompound />} />
 				<Route path="/:comp_id" element={<Compound/>} />
 			</Routes>
 	</div>
