@@ -1,13 +1,14 @@
-import React, { useState, useEffect, dispatch } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	retrieveCompounds,
-	findCompoundById,
-	findCompoundByIndex,
+	//findCompoundById,
+	//findCompoundByIndex,
 	deleteAllCompounds,
 } from "../actions/compounds";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText } from 'mdb-react-ui-kit';
+import Papa from "papaparse"; /* csv extraction */
 
 const CompoundsList = () => {
 	const [currentCompound, setCurrentCompound] = useState(null);
@@ -19,7 +20,7 @@ const CompoundsList = () => {
 
 	useEffect(() => {
 		dispatch(retrieveCompounds());
-	}, []);
+	}, [dispatch]);
 
 	const onChangeSearchTitle = e => {
 		const searchTitle = e.target.value;
@@ -47,10 +48,10 @@ const CompoundsList = () => {
 		});
 	};
 
-	const findByTitle = () => {
-		refreshData();
-		dispatch(findCompoundByIndex(searchTitle));
-	};
+	//const findByTitle = () => {
+	//	refreshData();
+	//	dispatch(findCompoundByIndex(searchTitle));
+	//};
 
 	const downloadMol2 = () => {
 		const element = JSONtoMOL2();
@@ -128,43 +129,6 @@ const CompoundsList = () => {
 				bondEntryMap.get("origin_atom_id").padStart(numPaddingBOND," ")+
 				bondEntryMap.get("target_atom_id").padStart(numPaddingBOND," ")+
 				bondEntryMap.get("bond_type").padStart(numPaddingBOND," ")+"\n";
-			//console.log(mol2FileString);
-			// if(bondEntryMap.get("bond_id").length===1){
-			// 	mol2FileString+="     "+bondEntryMap.get("bond_id");
-			// }
-			// else if(bondEntryMap.get("bond_id").length===2){
-			// 	mol2FileString+="    "+bondEntryMap.get("bond_id");
-			// }
-			// else{
-			// 	mol2FileString+="   "+bondEntryMap.get("bond_id");
-			// }
-
-			// if(bondEntryMap.get("origin_atom_id").length===1){
-			// 	mol2FileString+="     "+bondEntryMap.get("origin_atom_id");
-			// }
-			// else if(bondEntryMap.get("origin_atom_id").length===2){
-			// 	mol2FileString+="    "+bondEntryMap.get("origin_atom_id");
-			// }
-			// else{
-			// 	mol2FileString+="   "+bondEntryMap.get("origin_atom_id");
-			// }
-
-			// if(bondEntryMap.get("target_atom_id").length===1){
-			// 	mol2FileString+="     "+bondEntryMap.get("target_atom_id");
-			// }
-			// else if(bondEntryMap.get("target_atom_id").length===2){
-			// 	mol2FileString+="    "+bondEntryMap.get("target_atom_id");
-			// }
-			// else{
-			// 	mol2FileString+="   "+bondEntryMap.get("target_atom_id");
-			// }
-
-			// if(bondEntryMap.get("bond_type").length===1){
-			// 	mol2FileString+="    "+bondEntryMap.get("bond_type")+"\n";
-			// }
-			// else {
-			// 	mol2FileString+="   "+bondEntryMap.get("bond_type")+"\n";
-			// }
 		});
 		console.log(mol2FileString);
 		return mol2FileString;
@@ -185,9 +149,10 @@ const CompoundsList = () => {
 
 
 	const downloadCSV = () => {
-		const element = currentCompound.comp_properties;
+		const result = Papa.unparse([currentCompound.comp_properties])
+		console.log(result)
 		const url = window.URL.createObjectURL(
-			new Blob([element])
+			new Blob([result],{type: 'text/csv;charset=utf-8;'})
 		);
 		const link = document.createElement('a');
 		const filename = currentCompound.comp_material + ".csv";
@@ -196,7 +161,6 @@ const CompoundsList = () => {
 			'download',
 			filename
 		);
-
 		document.body.appendChild(link);
 		link.click();
 		link.parentNode.removeChild(link);
@@ -212,20 +176,21 @@ const CompoundsList = () => {
 
 	return (
 		<div className="container">
-		<div className="row">
-			<div className="col-md-8">
-				<div className="input-group mb-3">
+		<div className="row" >
+			<div className="col-md-8" style={{margin:"auto"}}>
+				<div className="input-group mb-3"  style={{textAlign:"center"}}  >
 					<input
-						type="text"
+						type="search"
 						className="form-control"
 						placeholder="Search by name"
 						value={searchTitle}
 						onChange={onChangeSearchTitle}
 					/>
+					
 				</div>
 			</div>
 		</div>
-		<div className="row">
+		<div className="row" style={{margin:"auto"}}>
 
 		<div className="col">
 			<h4>Compounds List</h4>
@@ -242,12 +207,17 @@ const CompoundsList = () => {
 						{compound.comp_material}
 					</li></strong>
 				))}
+				
 			</ul>
+			<div style={{margin:"auto",textAlign:"center"}}>
 			<button
+			
 				className="m-3 btn btn-sm btn-danger"
 				onClick={removeAllCompounds}
 			>Remove All</button>
+			</div>
 		</div>
+		
 		<div className="col">
 			{currentCompound ? (
 				<div>
@@ -271,41 +241,50 @@ const CompoundsList = () => {
 					</label>
 					{ " " + currentCompound.comp_notation}
 				</div>
-				<div className="imput-group-append">
+				<div >
+				<div className="input-group-append" style={{display:"grid"}}>
+				 
 					<button
 						type="button"
-						className="btn btn-primary mb-2"
+						className="btn btn-primary mb-2 compBtn"
 						onClick={()=>handleView()}
 					>View Properties...
 					</button>
 				</div>
-				<div className="input-group-append">
+				<div className="input-group-append" style={{display:"grid"}}>
 					<button
 						type="button"
-						className="btn btn-outline-dark mb-2"
+						className="btn btn-outline-dark mb-2 compBtn"
 
 						onClick={ ()=> downloadMol2() }
 					>Download mol2 (.mol2)</button>
 				</div>
-				<div className="input-group-append">
+				<div className="input-group-append" style={{display:"grid"}}>
 					<button
 						type="button"
-						className="btn btn-outline-dark mb-2"
+						className="btn btn-outline-dark mb-2 compBtn"
 						onClick={()=> downloadCSV() }
 					>Download Properties (.csv)</button>
 				</div>
-				<Link
+				</div>
+				<div style={{textAlign:"center"}}>
+				<Link 
 					to={"/" + currentCompound.comp_id}
-					className="badge badge-primary mt-2 w-25 p-3"
+					
 				>
-				Edit
-				</Link>
+				<button 
+						type="button"
+						className="btn btn-outline-dark mb-2 compBtn"
+						
+					>Edit</button>
+					</Link>
+				</div>
 				</div>
 
 			) : (
-				<div>
+				<div >
 					<br />
-					<MDBCard style={{ maxWidth: '22rem' }}>
+					<MDBCard style={{ maxWidth: '22rem',backgroundColor:"#488aab57",margin:"auto", boxShadow: "2px 2px 5px"}}>
 						<MDBCardBody>
 							<MDBCardTitle className="fw-bold">Quick Manual</MDBCardTitle>
 							<MDBCardText>
@@ -316,9 +295,9 @@ const CompoundsList = () => {
 				</div>
 			)}
 		</div>
-		<div className="col">
+		
 		{viewMode === true ? (
-				<div>
+				<div className="col">
 				<h4> Properties Table </h4>
 				<table className="table table-striped table-bordered table-sm mt-2" style={{display:"block",height:"400px",width:"230px", overflow:"auto"}}>
 					<thead>
@@ -328,7 +307,8 @@ const CompoundsList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{Object.keys( JSON.parse(JSON.stringify(currentCompound.comp_properties))).map((key,i)=> (
+						{Object.keys( JSON.parse(JSON.stringify(currentCompound.comp_properties))).sort().map((key, i)=>
+							(
 							<tr key={i}>
 								<td className="fw-bold">{key}</td>
 								<td>{ JSON.parse(JSON.stringify(currentCompound.comp_properties))[key] }</td>
@@ -339,10 +319,10 @@ const CompoundsList = () => {
 				</div>
 		) : (
 			<div>
-
+			
 			</div>
 		)}
-		</div>
+		
 		</div>
 		</div>
 	);
